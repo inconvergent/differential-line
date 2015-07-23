@@ -1,0 +1,12 @@
+res/*
+*.swp
+*.*~
+profile.profile
+color/*
+*.pyc
+.ropeproject
+build
+src/*.c
+src/*.html
+*.so
+profile/*
