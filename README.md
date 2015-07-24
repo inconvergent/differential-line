@@ -47,6 +47,20 @@ Ubuntu 14.04 LTS, but my guess is that it should work on most platforms.
 However the scripted install in `make` will not work in Windows (and I haven't
 tested it on Mac.)
 
+## Running on OS X
+
+To install on OS X, you'll need to install [OpenMP / Clang](https://clang-omp.github.io/), and then have cc linked
+as to that installation. So, in the differential-line directory:
+
+```bash
+$ brew install clang-omp
+$ ln -s /usr/local/bin/clang-omp /usr/local/bin/cc
+$ make
+$ rm /usr/local/bin/cc
+```
+
+Done! You should now have a copy installed.
+
 -----------
 http://inconvergent.net
 
