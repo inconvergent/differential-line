@@ -25,8 +25,8 @@ interesting 3D illusion.
 *    `numpy`
 *    `cython`
 *    `python-cairo` (do not install with pip, this generally does not work)
-*    `render` TODO: add link
-*    `zonemap` TODO: add link
+*    `render`: http://github.com/inconvergent/render
+*    `zonemap`: https://github.com/inconvergent/zonemap
 
 -----------
 http://inconvergent.net
