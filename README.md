@@ -59,6 +59,12 @@ $ make
 $ rm /usr/local/bin/cc
 ```
 
+Also, you'll need to have pygtk installed to run the included files.
+
+```bash
+$ brew install pygtk
+```
+
 Done! You should now have a copy installed.
 
 -----------
