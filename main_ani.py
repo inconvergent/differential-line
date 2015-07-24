@@ -6,7 +6,7 @@ from numpy.random import random, seed
 from modules.growth import spawn, spawn_curl
 
 NMAX = 10**7
-SIZE = 1000
+SIZE = 500
 ONE = 1./SIZE
 
 PROCS = 2
@@ -80,7 +80,7 @@ def main():
     #show_detail(render,edges_coordinates,sorted_vert_coordinates,fn)
 
     edges_coordinates = DF.get_edges_coordinates()
-    #fn = './res/ani{:04d}.png'.format(i)
+    fn = './res/ani{:04d}.png'.format(i)
     show(render,edges_coordinates,fn)
 
     #sorted_vert_coordinates = DF.get_sorted_vert_coordinates()

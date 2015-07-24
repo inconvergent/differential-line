@@ -1,32 +1,51 @@
 Differential Line
 =============
 
-The Differential [github] algorithm is inspired by the way a number of
-biological things in nature grows. Among other things it is made to mimic the
-growth of the human brain, as well as a great number of plants. In brief; we
-start of with a number of connected nodes in a circle. Gradually we introduce
-new nodes on the line—prioritizing segments where the curve bends more sharply.
-Over time the curve grows increasingly intricate, but it never self-intersects.
+![ani](/img/ani.gif?raw=true "animation")
 
-If we start with a different shape, and draw the outside position of the object
-for each growth step, we can get an entirely different kind of system with an
-interesting 3D illusion.
+This algorithm is inspired by the way a number of biological things in nature
+grows. Among other things it is made to mimic the growth of the human brain, as
+well as a great number of plants.
 
 ![img](/img/img.jpg?raw=true "image")
+
+In brief; we start of with a number of connected nodes in a circle. Gradually
+we introduce new nodes on the line—prioritizing segments where the curve bends
+more sharply.  Over time the curve grows increasingly intricate, but it never
+self-intersects.
 
 ![img](/img/img1.jpg?raw=true "image")
 
 ![img](/img/img2.jpg?raw=true "image")
 
+If we start with a different shape, and draw the outside position of the object
+for each growth step, we can get an entirely different kind of system with an
+interesting 3D illusion.
+
 ![img](/img/img3.jpg?raw=true "image")
 
-## Requirements
+## Prerequisites
+
+In order for this code to run you must first download and install these two
+repositories:
+
+*    `render`: http://github.com/inconvergent/render
+*    `zonemap`: https://github.com/inconvergent/zonemap
+
+## Other Dependencies
+
+The code also depends on:
 
 *    `numpy`
 *    `cython`
 *    `python-cairo` (do not install with pip, this generally does not work)
-*    `render`: http://github.com/inconvergent/render
-*    `zonemap`: https://github.com/inconvergent/zonemap
+
+## Running it
+
+To install the libraries locally, run `make`. I have only tested this code in
+Ubuntu 14.04 LTS, but my guess is that it should work on most platforms.
+However the scripted install in `make` will not work in Windows (and I haven't
+tested it on Mac.)
 
 -----------
 http://inconvergent.net
