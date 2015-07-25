@@ -73,6 +73,11 @@ You should now have a working copy installed.
 The code will probably work just fine under Windows, but I'm not sure how to
 install it. (Let me know if you get it working!)
 
+### Similar code
+
+If you find this alorithm insteresting you might also want to check out:
+https://github.com/inconvergent/differential-mesh.
+
 -----------
 http://inconvergent.net
 
