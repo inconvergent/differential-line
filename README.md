@@ -73,7 +73,13 @@ You should now have a working copy installed.
 The code will probably work just fine under Windows, but I'm not sure how to
 install it. (Let me know if you get it working!)
 
-### Similar code
+## Why all the main files?
+
+If you just want to try this out you should have a look at `main_ani.py`. It is
+pretty safe to ignore all the others main files. (They implement different
+behaviour, and some of them are very experimental.)
+
+## Similar code
 
 If you find this alorithm insteresting you might also want to check out:
 https://github.com/inconvergent/differential-mesh.
