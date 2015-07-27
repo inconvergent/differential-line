@@ -108,7 +108,7 @@ def main():
   DF.init_circle_segment(MID,MID,FARL*0.2, angles)
 
 
-  def wrap(steps_itt, render):
+  def wrap(render):
 
     global i
     global np_coords
@@ -135,7 +135,7 @@ def main():
 
     return res
 
-  render = Animate(SIZE, BACK, FRONT, None, wrap)
+  render = Animate(SIZE, BACK, FRONT, wrap)
 
   gtk.main()
 
