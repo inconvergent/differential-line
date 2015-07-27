@@ -67,6 +67,8 @@ cdef class Segments:
 
   cdef int __get_edge_normal(self, int s1, float *nn)
 
+  cdef int __safe_vertex_positions(self, float limit) nogil
+
   cpdef list get_edges_coordinates(self)
 
   cpdef int np_get_edges_coordinates(self, np.ndarray[double, mode="c",ndim=2] a)
@@ -102,6 +104,8 @@ cdef class Segments:
   cpdef float get_edge_curvature(self, int e1) except -1.0
 
   cpdef int get_active_vertex_count(self)
+
+  cpdef int safe_vertex_positions(self, float limit)
 
   cpdef int get_snum(self)
 

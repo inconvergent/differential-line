@@ -8,14 +8,24 @@ CONTRASTA = [0,0.7,0.8,1]
 CONTRASTB = [1,1,1,0.5]
 
 
-def show_detail(render,edges_coordinates,coords,fn=None):
+def show_detail(render,edges_coordinates,fn=None):
 
   render.clear_canvas()
-  render_circles = render.circles
-  render_circle_path = render.circle_path
+  render_circle = render.circle
 
-  render.ctx.set_line_width(render.pix)
-  render_circle_path(coords,render.pix*3,fill=True)
+  small = render.pix
+  large = render.pix*10
+
+  render.set_line_width(render.pix)
+
+  for vv in edges_coordinates:
+    render.set_front([0,0,0,0.5])
+    render_circle(vv[0], vv[1], r=small, fill=True)
+    render_circle(vv[2], vv[3], r=small, fill=True)
+
+    render.set_front([1,0,0,0.1])
+    render_circle(vv[0], vv[1], r=large, fill=False)
+    render_circle(vv[2], vv[3], r=large, fill=False)
 
   if fn:
     render.write_to_png(fn)

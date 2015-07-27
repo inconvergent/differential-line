@@ -88,6 +88,9 @@ cdef class Segments:
 
     return
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cdef int __valid_new_vertex(self, float x, float y):
 
     if x<0. or x>1.:
@@ -290,6 +293,29 @@ cdef class Segments:
 
     nn[0] = nx/dn
     nn[1] = ny/dn
+
+    return 1
+
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
+  cdef int __safe_vertex_positions(self, float limit) nogil:
+    """
+    check that all vertices are within limit of unit square boundary
+    """
+
+    cdef int vnum = self.vnum
+    cdef int i
+
+    for i in xrange(vnum):
+
+      if self.X[i]<limit or self.X[i]>1.-limit:
+
+        return -1
+
+      if self.Y[i]<limit or self.Y[i]>1.-limit:
+
+        return -1
 
     return 1
 
@@ -562,6 +588,9 @@ cdef class Segments:
 
     self.snum = snum+1
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef init_passive_line_segment(self, list xys):
 
     cdef list vertices = []
@@ -578,6 +607,9 @@ cdef class Segments:
 
     self.snum = snum+1
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef init_circle_segment(self, float x, float y, float r, list angles):
 
     cdef list vertices = []
@@ -587,7 +619,9 @@ cdef class Segments:
     cdef int i
     cdef int snum = self.snum
 
-    for i in xrange(len(angles)):
+    cdef int num_angles = len(angles)
+
+    for i in xrange(num_angles):
       the = angles[i]
 
       xx = x + cos(the)*r
@@ -598,7 +632,7 @@ cdef class Segments:
     for i in xrange(len(vertices)-1):
       self.__add_edge(vertices[i],vertices[i+1])
 
-    self.__add_edge(vertices[0],vertices[-1])
+    self.__add_edge(vertices[0],vertices[num_angles-1])
     self.snum = snum+1
 
   cpdef init_passive_circle_segment(self, float x, float y, float r, list angles):
@@ -835,6 +869,9 @@ cdef class Segments:
 
     return t
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef int get_active_vertex_count(self):
 
     cdef int c = 0
@@ -845,14 +882,30 @@ cdef class Segments:
 
     return c
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
+  cpdef int safe_vertex_positions(self, float limit):
+
+    return self.__safe_vertex_positions(limit)
+
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef int get_snum(self):
 
     return self.snum
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef int get_vnum(self):
 
     return self.vnum
 
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef int get_enum(self):
 
     return self.enum
