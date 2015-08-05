@@ -8,7 +8,6 @@ from numpy.random import random
 from modules.growth import spawn_curl
 from numpy import zeros
 
-
 NMAX = 10**6
 SIZE = 1000
 ONE = 1./SIZE
@@ -19,9 +18,9 @@ INIT_RAD = 25*ONE
 INIT_NUM = 40
 
 
-STP = ONE*0.2
-NEARL = 5*ONE
-FARL = 2.5*30*ONE
+STP = ONE
+NEARL = 3*ONE
+FARL = 80*ONE
 
 MID = 0.5
 
@@ -33,11 +32,6 @@ RED = [1,0,0,0.3]
 
 TWOPI = pi*2.
 
-ZONEWIDTH = 2.*FARL/ONE
-NZ = int(SIZE/ZONEWIDTH)
-
-print('NZ', NZ)
-print('ZONEWIDTH', ZONEWIDTH)
 
 i = 0
 
@@ -80,7 +74,7 @@ def main():
   from modules.show import show
 
 
-  DF = DifferentialLine(NMAX, NZ, NEARL, FARL, PROCS)
+  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
 
   angles = sorted(random(INIT_NUM)*TWOPI)
   DF.init_circle_segment(MID,MID,INIT_RAD, angles)
@@ -99,7 +93,7 @@ def main():
 
     ## render outline
     num = DF.np_get_edges_coordinates(np_coords)
-    show(render,np_coords[:num,:],fn,r=ONE*2)
+    show(render,np_coords[:num,:],fn,r=ONE)
 
     ## render solid
     #sorted_vert_coordinates = DF.get_sorted_vert_coordinates()

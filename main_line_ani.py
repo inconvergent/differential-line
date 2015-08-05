@@ -31,12 +31,6 @@ FRONT = [0,0,0,0.1]
 
 TWOPI = pi*2.
 
-ZONEWIDTH = 2.*FARL/ONE
-NZ = int(SIZE/ZONEWIDTH)
-
-print('NZ', NZ)
-print('ZONEWIDTH', ZONEWIDTH)
-
 i = 0
 np_coords = zeros(shape=(NMAX,4), dtype='float')
 np_vert_coords = zeros(shape=(NMAX,2), dtype='float')
@@ -76,7 +70,7 @@ def main():
   from modules.show import dots
   from modules.show import show
 
-  DF = DifferentialLine(NMAX, NZ, NEARL, FARL, PROCS)
+  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
 
   ## arc
   #angles = sorted(random(INIT_NUM)*pi*1.5)

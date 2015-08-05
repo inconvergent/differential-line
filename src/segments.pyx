@@ -9,7 +9,7 @@ from libc.stdlib cimport malloc, free
 from libc.math cimport cos
 from libc.math cimport sin
 from libc.math cimport sqrt
-from libc.math cimport fabs 
+from libc.math cimport fabs
 
 from helpers cimport int_array_init
 from helpers cimport float_array_init
@@ -31,7 +31,7 @@ cdef class Segments:
   all vertices must exist within the unit square.
   """
 
-  def __init__(self, int nmax, nz):
+  def __init__(self, int nmax, float zonewidth):
     """
     initialize triangular mesh.
 
@@ -49,8 +49,20 @@ cdef class Segments:
 
     self.snum = 0
 
-    self.zonemap = Zonemap(nz)
+    self.zonewidth = zonewidth
+
+    self.nz = int(1.0 /zonewidth)
+
+    if self.nz<3:
+      self.nz = 1
+      self.zonewidth = 1.0
+
+    self.zonemap = Zonemap(self.nz)
     self.zonemap.__assign_xy_arrays(self.X, self.Y)
+
+    print('nmax: {:d}'.format(nmax))
+    print('number of zones: {:d}'.format(self.nz))
+    print('zonewidth: {:f}'.format(zonewidth))
 
   def __cinit__(self,int nmax, int nz, *arg, **args):
 
@@ -325,7 +337,7 @@ cdef class Segments:
   cpdef list get_edges_coordinates(self):
     """
     get list of lists with coordinates x1,y1,x2,y2 of all edges
-    
+
     TODO: Deprecated?
     """
 
@@ -449,7 +461,7 @@ cdef class Segments:
     cdef dict e_visited = {}
     cdef list v_ordered = []
     cdef int enum = self.enum
-    
+
     cdef int e_start = -1
 
     for e in xrange(enum):
@@ -482,9 +494,9 @@ cdef class Segments:
       while vend!=vcurr:
 
         if ve_dict[vcurr][0] in e_visited:
-          e = ve_dict[vcurr][1] 
+          e = ve_dict[vcurr][1]
         else:
-          e = ve_dict[vcurr][0] 
+          e = ve_dict[vcurr][0]
 
         e_visited[e] = True
 
@@ -669,7 +681,7 @@ cdef class Segments:
 
     if e1<0:
       raise ValueError('invalid edge in split_edge e1,'+str(e1))
-    
+
     cdef int v1 = self.EV[2*e1]
     cdef int v2 = self.EV[2*e1+1]
 
@@ -813,21 +825,21 @@ cdef class Segments:
     if va<0 or vb<0:
       raise ValueError('non-vertex.')
 
-    cdef int e2 
+    cdef int e2
     cdef int e3
 
     if self.VE[2*va] == self.VE[2*vb]:
-      e2 = self.VE[2*va+1] 
-      e3 = self.VE[2*vb+1] 
+      e2 = self.VE[2*va+1]
+      e3 = self.VE[2*vb+1]
     elif self.VE[2*va] == self.VE[2*vb+1]:
-      e2 = self.VE[2*va+1] 
-      e3 = self.VE[2*vb] 
+      e2 = self.VE[2*va+1]
+      e3 = self.VE[2*vb]
     elif self.VE[2*va+1] == self.VE[2*vb]:
-      e2 = self.VE[2*va] 
-      e3 = self.VE[2*vb+1] 
+      e2 = self.VE[2*va]
+      e3 = self.VE[2*vb+1]
     elif self.VE[2*va+1] == self.VE[2*vb+1]:
-      e2 = self.VE[2*va] 
-      e3 = self.VE[2*vb] 
+      e2 = self.VE[2*va]
+      e3 = self.VE[2*vb]
     else:
       raise ValueError('edges not connected')
 

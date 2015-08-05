@@ -4,7 +4,7 @@
 from __future__ import division
 
 cimport cython
-cimport segments 
+cimport segments
 
 from cython.parallel import parallel, prange
 
@@ -16,10 +16,9 @@ from helpers cimport edges_are_connected
 
 cdef class DifferentialLine(segments.Segments):
 
-  def __init__(self, int nmax, int nz,
-               float nearl, float farl, int procs):
+  def __init__(self, int nmax, float zonewidth, float nearl, float farl, int procs):
 
-    segments.Segments.__init__(self, nmax, nz)
+    segments.Segments.__init__(self, nmax, zonewidth)
 
     """
     - nearl is the closest comfortable distance between two vertices.
@@ -29,10 +28,13 @@ cdef class DifferentialLine(segments.Segments):
     """
 
     self.nearl = nearl
-    
+
     self.farl = farl
 
     self.procs = procs
+
+    print('nearl: {:f}'.format(nearl))
+    print('farl: {:f}'.format(farl))
 
     return
 
@@ -123,7 +125,7 @@ cdef class DifferentialLine(segments.Segments):
           v2 = self.EV[2*e2+1]
         else:
           v2 = self.EV[2*e2]
-        
+
         x = self.X[v]
         y = self.Y[v]
 
@@ -229,7 +231,7 @@ cdef class DifferentialLine(segments.Segments):
           v2 = self.EV[2*e2+1]
         else:
           v2 = self.EV[2*e2]
-        
+
         x = self.X[v]
         y = self.Y[v]
 

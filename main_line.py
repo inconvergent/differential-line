@@ -27,12 +27,6 @@ FRONT = [0,0,0,0.08]
 
 TWOPI = pi*2.
 
-ZONEWIDTH = 2.*FARL/ONE
-NZ = int(SIZE/ZONEWIDTH)
-
-print 'NZ', NZ
-print 'ZONEWIDTH', ZONEWIDTH
-
 
 def main():
 
@@ -53,7 +47,7 @@ def main():
   np_vert_coords = zeros(shape=(NMAX,2), dtype='float')
 
 
-  DF = DifferentialLine(NMAX, NZ, NEARL, FARL, PROCS)
+  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
 
   render = Render(SIZE, BACK, FRONT)
 

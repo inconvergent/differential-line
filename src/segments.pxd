@@ -12,7 +12,7 @@ cdef class Segments:
   cdef int nmax
 
   cdef int vnum
-  
+
   cdef int vact
 
   cdef int enum
@@ -20,7 +20,9 @@ cdef class Segments:
   cdef int snum
 
   cdef int nz
-  
+
+  cdef float zonewidth
+
   ## ARRAYS
 
   cdef float *X # vertex x
@@ -60,7 +62,7 @@ cdef class Segments:
   cdef int __vertex_segment(self, int v1)
 
   cdef int __del_vertex(self, int v1) except -1
-  
+
   cdef int __set_passive_vertex(self, int v1) except -1
 
   cdef int __del_edge(self, int e1) except -1

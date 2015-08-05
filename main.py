@@ -29,12 +29,6 @@ FRONT = [0,0,0,1]
 
 TWOPI = pi*2.
 
-ZONEWIDTH = 2.*FARL/ONE
-NZ = int(SIZE/ZONEWIDTH)
-
-print 'NZ', NZ
-print 'ZONEWIDTH', ZONEWIDTH
-
 
 def steps(df,steps_itt):
 
@@ -57,7 +51,7 @@ def main():
   from differentialLine import DifferentialLine
 
 
-  DF = DifferentialLine(NMAX, NZ, NEARL, FARL, PROCS)
+  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
 
   render = Render(SIZE, BACK, FRONT)
 
