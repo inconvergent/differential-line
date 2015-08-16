@@ -1,11 +1,13 @@
 Differential Line
 =============
 
-![ani](/img/ani.gif?raw=true "animation")
+![ani](/img/ani2.gif?raw=true "animation")
 
 This algorithm is inspired by the way a number of biological things in nature
 grows. Among other things it is made to mimic the growth of the human brain, as
 well as a great number of plants.
+
+![ani](/img/ani.gif?raw=true "animation")
 
 ![img](/img/img.jpg?raw=true "image")
 
