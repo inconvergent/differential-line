@@ -6,10 +6,11 @@ from __future__ import print_function
 from numpy import pi
 from numpy.random import random
 from modules.growth import spawn_curl
+from modules.growth import spawn
 from numpy import zeros
 
 NMAX = 10**6
-SIZE = 1000
+SIZE = 560
 ONE = 1./SIZE
 
 PROCS = 2
@@ -18,9 +19,9 @@ INIT_RAD = 25*ONE
 INIT_NUM = 40
 
 
-STP = ONE
+STP = ONE*0.4
 NEARL = 3*ONE
-FARL = 80*ONE
+FARL = 40*ONE
 
 MID = 0.5
 
@@ -46,6 +47,7 @@ def steps(df):
   t1 = time()
   df.optimize_avoid(STP)
   spawn_curl(df, NEARL)
+  #spawn(df, NEARL, 0.05)
 
   if df.safe_vertex_positions(3*STP)<0:
 
@@ -88,12 +90,16 @@ def main():
     res = steps(DF)
 
     ## if fn is a path each image will be saved to that path
-    fn = None
-    ##fn = './res/ani{:04d}.png'.format(i)
+    #fn = None
+
+    if i%2==0:
+      fn = './ani{:04d}.png'.format(i)
+    else:
+      fn = None
 
     ## render outline
     num = DF.np_get_edges_coordinates(np_coords)
-    show(render,np_coords[:num,:],fn,r=ONE)
+    show(render,np_coords[:num,:],fn,r=1.3*ONE)
 
     ## render solid
     #sorted_vert_coordinates = DF.get_sorted_vert_coordinates()

@@ -11,23 +11,23 @@ from modules.growth import spawn_curl
 
 
 NMAX = 10**6
-SIZE = 1000
+SIZE = 560
 ONE = 1./SIZE
 
 PROCS = 2
 
-INIT_NUM = 6
+INIT_NUM = 10
 
 STP = ONE*0.1
 NEARL = 4*ONE
-FARL = 120*ONE
+FARL = 100*ONE
 
 MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
 BACK = [1,1,1,1]
-FRONT = [0,0,0,0.1]
+FRONT = [0,0,0,0.05]
 
 TWOPI = pi*2.
 
@@ -89,17 +89,17 @@ def main():
     #xys.append((x,y))
   #DF.init_line_segment(xys, lock_edges=1)
 
-  ## diagonal line
-  #yy = sorted(0.2+0.6*random(INIT_NUM))
-  #xx = 0.2+linspace(0,0.6,num=INIT_NUM)
-  #xys = []
-  #for x,y in zip(xx,yy):
-    #xys.append((x,y))
-  #DF.init_line_segment(xys, lock_edges=1)
+  # diagonal line
+  yy = sorted(0.3+0.4*random(INIT_NUM))
+  xx = 0.3+linspace(0,0.4,num=INIT_NUM)
+  xys = []
+  for x,y in zip(xx,yy):
+    xys.append((x,y))
+  DF.init_line_segment(xys, lock_edges=1)
 
 
-  angles = sorted(random(INIT_NUM)*TWOPI)
-  DF.init_circle_segment(MID,MID,FARL*0.2, angles)
+  #angles = sorted(random(INIT_NUM)*TWOPI)
+  #DF.init_circle_segment(MID,MID,FARL*0.2, angles)
 
 
   def wrap(render):
@@ -109,21 +109,25 @@ def main():
     global np_vert_coords
 
     ## if fn is a path each image will be saved to that path
-    fn = None
-    ##fn = './res/ani{:04d}.png'.format(i)
+    #fn = None
+    #fn = './res/ani{:04d}.png'.format(i)
+
 
     res = steps(DF)
 
-    #coord_num = DF.np_get_edges_coordinates(np_coords)
-    #sandstroke(render,np_coords[:coord_num,:],10,fn)
-
     render.set_front(FRONT)
-    vert_num = DF.np_get_vert_coordinates(np_vert_coords)
-    dots(render,np_vert_coords[:vert_num,:],fn)
 
-    if i%10==0:
-      coord_num = DF.np_get_edges_coordinates(np_coords)
-      sandstroke(render,np_coords[:coord_num,:],8,None)
+    if i%2==0:
+      fn = './ani{:04d}.png'.format(i)
+    else:
+      fn = None
+
+    coord_num = DF.np_get_edges_coordinates(np_coords)
+    sandstroke(render,np_coords[:coord_num,:],10,fn)
+
+    #vert_num = DF.np_get_vert_coordinates(np_vert_coords)
+    #dots(render,np_vert_coords[:vert_num,:],fn)
+
 
     i += 1
 
