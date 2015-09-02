@@ -9,9 +9,9 @@ NMAX = 10**7
 SIZE = 10000
 ONE = 1./SIZE
 
-STP = ONE*0.05
-NEARL = 15*ONE
-FARL = 0.2
+STP = ONE*0.02
+NEARL = 2*ONE
+FARL = 0.235
 
 PROCS = 4
 
@@ -19,10 +19,10 @@ MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
-INIT_NUM = 30
+INIT_NUM = 5
 
 BACK = [1,1,1,1]
-FRONT = [0,0,0,0.08]
+FRONT = [0,0,0,0.04]
 
 TWOPI = pi*2.
 
@@ -55,12 +55,14 @@ def main():
 
   ## arc
 
-  #angles = sorted(random(INIT_NUM)*pi*1.5)
-  #xys = []
-  #for a in angles:
-    #x = 0.5 + cos(a)*0.2
-    #y = 0.5 + sin(a)*0.2
-    #xys.append((x,y))
+  angles = sorted(random(INIT_NUM)*pi*1.5)
+  xys = []
+  for a in angles:
+    x = 0.5 + cos(a)*0.2
+    y = 0.5 + sin(a)*0.2
+    xys.append((x,y))
+
+  DF.init_line_segment(xys, lock_edges=1)
 
   ## vertical line
 
@@ -74,13 +76,16 @@ def main():
 
   ## diagonal line
 
-  yy = sorted(MID + 0.2*(1-2*random(INIT_NUM)))
-  xx = sorted(MID + 0.2*(1-2*random(INIT_NUM)))
-  xys = []
-  for x,y in zip(xx,yy):
-    xys.append((x,y))
+  #yy = sorted(MID + 0.2*(1-2*random(INIT_NUM)))
+  #xx = sorted(MID + 0.2*(1-2*random(INIT_NUM)))
+  #xys = []
+  #for x,y in zip(xx,yy):
+    #xys.append((x,y))
 
-  DF.init_line_segment(xys, lock_edges=1)
+  #DF.init_line_segment(xys, lock_edges=1)
+
+  #angles = sorted(random(INIT_NUM)*TWOPI)
+  #DF.init_circle_segment(MID,MID,FARL*0.2, angles)
 
 
   for i in count():
@@ -88,10 +93,10 @@ def main():
     t_start = time()
 
     DF.optimize_avoid(STP)
-    spawn_curl(DF,NEARL)
+    spawn_curl(DF,NEARL, 0.016)
 
     if i%100==0:
-      fn = './res/line_expand_ab_{:04d}.png'.format(i)
+      fn = './res/kine_arc_e_{:04d}.png'.format(i)
     else:
       fn = None
 
@@ -99,10 +104,13 @@ def main():
     num = DF.np_get_edges_coordinates(np_coords)
     sandstroke(render,np_coords[:num,:],20,fn)
 
-    if i%40==0:
-      render.set_front([0,0,0,0.3])
-      num = DF.np_get_edges_coordinates(np_coords)
-      sandstroke(render,np_coords[:num,:],10,fn)
+
+    if random()<0.05:
+      sandstroke(render,np_coords[:num,:],30,None)
+
+    vert_num = DF.np_get_vert_coordinates(np_vert_coords)
+    dots(render,np_vert_coords[:vert_num,:],None)
+
 
     t_stop = time()
 

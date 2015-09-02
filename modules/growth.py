@@ -20,7 +20,7 @@ def spawn(df, d, limit):
     except ValueError:
       pass
 
-def spawn_curl(df, limit):
+def spawn_curl(df, limit, prob_scale=1.0):
 
   enum = df.get_enum()
   ind_curv = {}
@@ -39,7 +39,7 @@ def spawn_curl(df, limit):
   ne = len(ind_curv)
   for r,(e,t) in zip(random(ne),ind_curv.iteritems()):
 
-    if r<t/max_curv:
+    if r<t/max_curv*prob_scale:
     #if t>2*limit or r<t/max_curv:
     #if r<sqrt(t):
     #if True:
