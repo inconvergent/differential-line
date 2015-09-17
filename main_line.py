@@ -19,7 +19,7 @@ MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
-INIT_NUM = 5
+INIT_NUM = 6
 
 BACK = [1,1,1,1]
 FRONT = [0,0,0,0.04]
@@ -96,7 +96,7 @@ def main():
     spawn_curl(DF,NEARL, 0.016)
 
     if i%100==0:
-      fn = './res/kine_arc_e_{:04d}.png'.format(i)
+      fn = './res/kine_arc_ad_{:04d}.png'.format(i)
     else:
       fn = None
 
