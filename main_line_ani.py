@@ -11,7 +11,7 @@ from modules.growth import spawn_curl
 
 
 NMAX = 10**6
-SIZE = 560
+SIZE = 800
 ONE = 1./SIZE
 
 PROCS = 2
@@ -109,18 +109,13 @@ def main():
     global np_vert_coords
 
     ## if fn is a path each image will be saved to that path
-    #fn = None
     #fn = './res/ani{:04d}.png'.format(i)
+    fn = None
 
 
     res = steps(DF)
 
     render.set_front(FRONT)
-
-    if i%2==0:
-      fn = './ani{:04d}.png'.format(i)
-    else:
-      fn = None
 
     coord_num = DF.np_get_edges_coordinates(np_coords)
     sandstroke(render,np_coords[:coord_num,:],10,fn)
