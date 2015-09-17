@@ -13,19 +13,21 @@ def show_detail(render,edges_coordinates,fn=None):
   render.clear_canvas()
   render_circle = render.circle
 
-  small = render.pix
-  large = render.pix*10
+  small = render.pix*3.
+  large = render.pix*10.
 
   render.set_line_width(render.pix)
 
   for vv in edges_coordinates:
-    render.set_front([0,0,0,0.5])
+
+    render.set_front([1,0,0,0.4])
+    render_circle(vv[0], vv[1], r=large, fill=False)
+    render_circle(vv[2], vv[3], r=large, fill=False)
+
+    render.set_front([0,0,0,0.8])
     render_circle(vv[0], vv[1], r=small, fill=True)
     render_circle(vv[2], vv[3], r=small, fill=True)
 
-    render.set_front([1,0,0,0.1])
-    render_circle(vv[0], vv[1], r=large, fill=False)
-    render_circle(vv[2], vv[3], r=large, fill=False)
 
   if fn:
     render.write_to_png(fn)

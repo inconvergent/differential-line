@@ -20,8 +20,8 @@ INIT_NUM = 40
 
 
 STP = ONE*0.4
-NEARL = 3*ONE
-FARL = 40*ONE
+NEARL = 6*ONE
+FARL = 60*ONE
 
 MID = 0.5
 
@@ -92,13 +92,9 @@ def main():
     ## if fn is a path each image will be saved to that path
     fn = None
 
-    ## render outline
+    ## render outline with marked circles
     num = DF.np_get_edges_coordinates(np_coords)
-    show(render,np_coords[:num,:],fn,r=1.3*ONE)
-
-    ## render solid
-    #sorted_vert_coordinates = DF.get_sorted_vert_coordinates()
-    #show_closed(render,sorted_vert_coordinates,fn)
+    show_detail(render,np_coords[:num,:],fn)
 
     i += 1
 
