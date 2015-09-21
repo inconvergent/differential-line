@@ -3,21 +3,21 @@
 
 from __future__ import division
 
-cimport segments 
+cimport segments
 from libc.stdlib cimport malloc, free
 #from cpython.mem cimport PyMem_Malloc, PyMem_Realloc, PyMem_Free
 
 cdef class DifferentialLine(segments.Segments):
 
-  cdef float nearl
+  cdef double nearl
 
-  cdef float farl
+  cdef double farl
 
   cdef int procs
 
-  cdef float *SX
+  cdef double *SX
 
-  cdef float *SY
+  cdef double *SY
 
   cdef int *SD
 
@@ -25,11 +25,11 @@ cdef class DifferentialLine(segments.Segments):
 
   ## FUNCTIONS
 
-  cdef int __optimize_avoid(self, float step)
-  
-  cdef int __optimize_contract(self, float step, float freeze_distance)
+  cdef int __optimize_avoid(self, double step)
 
-  cpdef int optimize_avoid(self, float step)
+  cdef int __optimize_contract(self, double step, double freeze_distance)
 
-  cpdef int optimize_contract(self, float step, float freeze_distance)
+  cpdef int optimize_avoid(self, double step)
+
+  cpdef int optimize_contract(self, double step, double freeze_distance)
 
