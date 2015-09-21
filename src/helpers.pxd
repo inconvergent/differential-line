@@ -19,9 +19,9 @@ cdef inline void int_array_init(int *a,int n,int v):
     a[i] = v
   return
 
-cdef inline void float_array_init(float *a,int n,float v):
+cdef inline void double_array_init(double *a,int n,double v):
   """
-  initialize float array a of length n with float value v
+  initialize double array a of length n with double value v
   """
   cdef int i
   for i in xrange(n):

@@ -10,13 +10,13 @@ from cython.parallel import parallel, prange
 
 from libc.math cimport sqrt
 
-from helpers cimport float_array_init
+from helpers cimport double_array_init
 from helpers cimport int_array_init
 from helpers cimport edges_are_connected
 
 cdef class DifferentialLine(segments.Segments):
 
-  def __init__(self, int nmax, float zonewidth, float nearl, float farl, int procs):
+  def __init__(self, int nmax, double zonewidth, double nearl, double farl, int procs):
 
     segments.Segments.__init__(self, nmax, zonewidth)
 
@@ -40,9 +40,9 @@ cdef class DifferentialLine(segments.Segments):
 
   def __cinit__(self, int nmax, *arg, **args):
 
-    self.SX = <float *>malloc(nmax*sizeof(float))
+    self.SX = <double *>malloc(nmax*sizeof(double))
 
-    self.SY = <float *>malloc(nmax*sizeof(float))
+    self.SY = <double *>malloc(nmax*sizeof(double))
 
     self.SD = <int *>malloc(nmax*sizeof(int))
 
@@ -66,15 +66,15 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cdef int __optimize_avoid(self, float step):
+  cdef int __optimize_avoid(self, double step):
     """
     all vertices will move away from all neighboring (closer than farl)
     vertices
     """
 
     cdef int procs = self.procs
-    cdef float farl = self.farl
-    cdef float nearl = self.nearl
+    cdef double farl = self.farl
+    cdef double nearl = self.nearl
 
     cdef int vnum = self.vnum
 
@@ -84,17 +84,17 @@ cdef class DifferentialLine(segments.Segments):
     cdef int neigh
     cdef int neighbor_num
 
-    cdef float x
-    cdef float y
-    cdef float dx
-    cdef float dy
-    cdef float nrm
+    cdef double x
+    cdef double y
+    cdef double dx
+    cdef double dy
+    cdef double nrm
 
-    cdef float resx
-    cdef float resy
+    cdef double resx
+    cdef double resy
 
     cdef int *vertices
-    cdef int asize = self.zonemap.__get_greatest_zone_size()*9*sizeof(int)
+    cdef int asize = self.zonemap.__get_max_sphere_count()*sizeof(int)
 
     cdef int e1
     cdef int e2
@@ -170,15 +170,15 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cdef int __optimize_contract(self, float step, float freeze_distance):
+  cdef int __optimize_contract(self, double step, double freeze_distance):
     """
     all vertices will move away from all neighboring (closer than farl)
     vertices
     """
 
     cdef int procs = self.procs
-    cdef float farl = self.farl
-    cdef float nearl = self.nearl
+    cdef double farl = self.farl
+    cdef double nearl = self.nearl
 
     cdef int vnum = self.vnum
 
@@ -188,17 +188,17 @@ cdef class DifferentialLine(segments.Segments):
     cdef int neigh
     cdef int neighbor_num
 
-    cdef float x
-    cdef float y
-    cdef float dx
-    cdef float dy
-    cdef float nrm
+    cdef double x
+    cdef double y
+    cdef double dx
+    cdef double dy
+    cdef double nrm
 
-    cdef float resx
-    cdef float resy
+    cdef double resx
+    cdef double resy
 
     cdef int *vertices
-    cdef int asize = self.zonemap.__get_greatest_zone_size()*9*sizeof(int)
+    cdef int asize = self.zonemap.__get_max_sphere_count()*sizeof(int)
 
     cdef int e1
     cdef int e2
@@ -304,10 +304,10 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef int optimize_avoid(self, float step):
+  cpdef int optimize_avoid(self, double step):
 
-    float_array_init(self.SX,self.vnum,0.)
-    float_array_init(self.SY,self.vnum,0.)
+    double_array_init(self.SX,self.vnum,0.)
+    double_array_init(self.SY,self.vnum,0.)
 
     self.__optimize_avoid(step)
 
@@ -325,17 +325,17 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef int optimize_contract(self, float step, float freeze_distance):
+  cpdef int optimize_contract(self, double step, double freeze_distance):
 
-    float_array_init(self.SX,self.vnum,0.)
-    float_array_init(self.SY,self.vnum,0.)
+    double_array_init(self.SX,self.vnum,0.)
+    double_array_init(self.SY,self.vnum,0.)
 
     int_array_init(self.SD,self.vnum,-1)
 
     self.__optimize_contract(step, freeze_distance)
 
-    cdef float x
-    cdef float y
+    cdef double x
+    cdef double y
 
     for v in range(self.vnum):
 

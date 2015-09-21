@@ -21,13 +21,13 @@ cdef class Segments:
 
   cdef int nz
 
-  cdef float zonewidth
+  cdef double zonewidth
 
   ## ARRAYS
 
-  cdef float *X # vertex x
+  cdef double *X # vertex x
 
-  cdef float *Y # vertex y
+  cdef double *Y # vertex y
 
   cdef int *VA # vertex is active: 1, passive: 0, dead: -1
 
@@ -43,11 +43,11 @@ cdef class Segments:
 
   ## FUNCTIONS
 
-  cdef int __valid_new_vertex(self, float x, float y)
+  cdef int __valid_new_vertex(self, double x, double y)
 
-  cdef int __add_vertex(self,float x,float y, int s)
+  cdef int __add_vertex(self,double x,double y, int s)
 
-  cdef int __add_passive_vertex(self,float x,float y, int s)
+  cdef int __add_passive_vertex(self,double x,double y, int s)
 
   cdef int __valid_new_edge(self, int v1, int v2)
 
@@ -67,9 +67,9 @@ cdef class Segments:
 
   cdef int __del_edge(self, int e1) except -1
 
-  cdef int __get_edge_normal(self, int s1, float *nn)
+  cdef int __get_edge_normal(self, int s1, double *nn)
 
-  cdef int __safe_vertex_positions(self, float limit) nogil
+  cdef int __safe_vertex_positions(self, double limit) nogil
 
   cpdef list get_edges_coordinates(self)
 
@@ -77,7 +77,7 @@ cdef class Segments:
 
   cpdef int np_get_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a)
 
-  cpdef float get_greatest_distance(self, float x, float y)
+  cpdef double get_greatest_distance(self, double x, double y)
 
   cpdef list get_sorted_vert_coordinates(self)
 
@@ -85,7 +85,7 @@ cdef class Segments:
 
   cpdef list get_edges_vertices(self)
 
-  cpdef float get_edge_length(self, int e1)
+  cpdef double get_edge_length(self, int e1)
 
   cpdef list get_edge_vertices(self, int e1)
 
@@ -93,21 +93,21 @@ cdef class Segments:
 
   cpdef init_passive_line_segment(self, list xys)
 
-  cpdef init_circle_segment(self, float x, float y, float r, list angles)
+  cpdef init_circle_segment(self, double x, double y, double r, list angles)
 
-  cpdef init_passive_circle_segment(self, float x, float y, float r, list angles)
+  cpdef init_passive_circle_segment(self, double x, double y, double r, list angles)
 
-  cpdef int split_edge(self, int e1, float minimum_length=*) except -1
+  cpdef int split_edge(self, int e1, double minimum_length=*) except -1
 
-  cpdef split_long_edges(self, float limit)
+  cpdef split_long_edges(self, double limit)
 
-  cpdef int collapse_edge(self, int e1, float maximum_length=*) except -1
+  cpdef int collapse_edge(self, int e1, double maximum_length=*) except -1
 
-  cpdef float get_edge_curvature(self, int e1) except -1.0
+  cpdef double get_edge_curvature(self, int e1) except -1.0
 
   cpdef int get_active_vertex_count(self)
 
-  cpdef int safe_vertex_positions(self, float limit)
+  cpdef int safe_vertex_positions(self, double limit)
 
   cpdef int get_snum(self)
 

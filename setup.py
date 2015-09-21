@@ -23,7 +23,7 @@ extensions = [
 
 setup(
   name = "differential-line",
-  version = '0.0.1',
+  version = '0.0.4',
   author = '@inconvergent',
   install_requires = ['numpy>=1.8.2', 'cython>=0.20.0'],
   license = 'MIT',
