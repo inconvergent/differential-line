@@ -11,7 +11,7 @@ from libc.math cimport sin
 from libc.math cimport sqrt
 from libc.math cimport fabs
 
-from helpers cimport int_array_init
+from helpers cimport long_array_init
 from helpers cimport double_array_init
 from helpers cimport add_e_to_ve
 from helpers cimport del_e_from_ve
@@ -31,7 +31,7 @@ cdef class Segments:
   all vertices must exist within the unit square.
   """
 
-  def __init__(self, int nmax, double zonewidth):
+  def __init__(self, long nmax, double zonewidth):
     """
     initialize triangular mesh.
 
@@ -51,7 +51,7 @@ cdef class Segments:
 
     self.zonewidth = zonewidth
 
-    self.nz = int(1.0 /zonewidth)
+    self.nz = long(1.0 /zonewidth)
 
     if self.nz<3:
       self.nz = 1
@@ -64,7 +64,7 @@ cdef class Segments:
     print('number of zones: {:d}'.format(self.nz))
     print('zonewidth: {:f}'.format(zonewidth))
 
-  def __cinit__(self,int nmax, int nz, *arg, **args):
+  def __cinit__(self,long nmax, long nz, *arg, **args):
 
     self.X = <double *>malloc(nmax*sizeof(double))
     double_array_init(self.X,nmax,0.)
@@ -72,17 +72,17 @@ cdef class Segments:
     self.Y = <double *>malloc(nmax*sizeof(double))
     double_array_init(self.Y,nmax,0.)
 
-    self.VA = <int *>malloc(nmax*sizeof(int))
-    int_array_init(self.VA,nmax,-1)
+    self.VA = <long *>malloc(nmax*sizeof(long))
+    long_array_init(self.VA,nmax,-1)
 
-    self.VS = <int *>malloc(nmax*sizeof(int))
-    int_array_init(self.VS,nmax,-1)
+    self.VS = <long *>malloc(nmax*sizeof(long))
+    long_array_init(self.VS,nmax,-1)
 
-    self.EV = <int *>malloc(2*nmax*sizeof(int))
-    int_array_init(self.EV,2*nmax,-1)
+    self.EV = <long *>malloc(2*nmax*sizeof(long))
+    long_array_init(self.EV,2*nmax,-1)
 
-    self.VE = <int *>malloc(2*nmax*sizeof(int))
-    int_array_init(self.VE,2*nmax,-1)
+    self.VE = <long *>malloc(2*nmax*sizeof(long))
+    long_array_init(self.VE,2*nmax,-1)
 
   def __dealloc__(self):
 
@@ -103,7 +103,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __valid_new_vertex(self, double x, double y):
+  cdef long __valid_new_vertex(self, double x, double y):
 
     if x<0. or x>1.:
       return -1
@@ -116,7 +116,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __add_vertex(self,double x,double y, int s):
+  cdef long __add_vertex(self,double x,double y, long s):
     """
     adds a vertex x,y. returns id of new vertex
     """
@@ -124,7 +124,7 @@ cdef class Segments:
     if self.__valid_new_vertex(x,y)<0:
       raise ValueError('Vertex outside unit square.')
 
-    cdef int vnum = self.vnum
+    cdef long vnum = self.vnum
 
     self.X[vnum] = x
     self.Y[vnum] = y
@@ -139,7 +139,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __add_passive_vertex(self,double x,double y, int s):
+  cdef long __add_passive_vertex(self,double x,double y, long s):
     """
     adds a vertex x,y. returns id of new vertex
     """
@@ -149,7 +149,7 @@ cdef class Segments:
     if self.__valid_new_vertex(x,y)<0:
       raise ValueError('Vertex outside unit square.')
 
-    cdef int vnum = self.vnum
+    cdef long vnum = self.vnum
 
     self.X[vnum] = x
     self.Y[vnum] = y
@@ -164,7 +164,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __valid_new_edge(self, int v1, int v2):
+  cdef long __valid_new_edge(self, long v1, long v2):
 
     if v1<0 or v1>self.vnum-1 or self.VA[v1]<0:
       return -1
@@ -177,12 +177,12 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __add_edge(self, int v1, int v2) except -1:
+  cdef long __add_edge(self, long v1, long v2) except -1:
     """
     add edge between vertices v1 and v2. returns id of new edge
     """
 
-    cdef int enum = self.enum
+    cdef long enum = self.enum
     cdef str err
 
     if self.__valid_new_edge(v1,v2)<0:
@@ -201,7 +201,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __edge_exists(self, int e1):
+  cdef long __edge_exists(self, long e1):
 
     if self.EV[2*e1]>-1 and self.EV[2*e1+1]>-1:
       return 1
@@ -211,7 +211,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __vertex_exists(self, int v1):
+  cdef long __vertex_exists(self, long v1):
 
     if self.VA[v1]>-1:
       return 1
@@ -221,21 +221,21 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __vertex_status(self, int v1):
+  cdef long __vertex_status(self, long v1):
 
     return self.VA[v1]
 
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __vertex_segment(self, int v1):
+  cdef long __vertex_segment(self, long v1):
 
     return self.VS[v1]
 
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __del_vertex(self, int v1) except -1:
+  cdef long __del_vertex(self, long v1) except -1:
     """
     delete vertex v1.
     """
@@ -249,7 +249,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __set_passive_vertex(self, int v1) except -1:
+  cdef long __set_passive_vertex(self, long v1) except -1:
     """
     delete vertex v1.
     """
@@ -261,7 +261,7 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __del_edge(self, int e1) except -1:
+  cdef long __del_edge(self, long e1) except -1:
     """
     delete edge e1.
     """
@@ -269,8 +269,8 @@ cdef class Segments:
     if e1<0 or e1>self.enum-1:
       raise ValueError('invalid edge in __del_edge e1,'+str(e1))
 
-    cdef int v1 = self.EV[2*e1]
-    cdef int v2 = self.EV[2*e1+1]
+    cdef long v1 = self.EV[2*e1]
+    cdef long v2 = self.EV[2*e1+1]
 
     self.EV[2*e1] = -1
     self.EV[2*e1+1] = -1
@@ -286,10 +286,10 @@ cdef class Segments:
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cdef int __get_edge_normal(self, int s1, double *nn):
+  cdef long __get_edge_normal(self, long s1, double *nn):
 
-    cdef int v1 = self.EV[2*s1]
-    cdef int v2 = self.EV[2*s1+1]
+    cdef long v1 = self.EV[2*s1]
+    cdef long v2 = self.EV[2*s1+1]
 
     cdef double x1 = self.X[v1]
     cdef double y1 = self.Y[v1]
@@ -311,13 +311,13 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cdef int __safe_vertex_positions(self, double limit) nogil:
+  cdef long __safe_vertex_positions(self, double limit) nogil:
     """
     check that all vertices are within limit of unit square boundary
     """
 
-    cdef int vnum = self.vnum
-    cdef int i
+    cdef long vnum = self.vnum
+    cdef long i
 
     for i in xrange(vnum):
 
@@ -341,11 +341,11 @@ cdef class Segments:
     TODO: Deprecated?
     """
 
-    cdef int v1
-    cdef int v2
-    cdef int e
+    cdef long v1
+    cdef long v2
+    cdef long e
     cdef list res = []
-    cdef int enum = self.enum
+    cdef long enum = self.enum
 
     for e in xrange(enum):
 
@@ -361,17 +361,17 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int np_get_edges_coordinates(self, np.ndarray[double, mode="c",ndim=2] a):
+  cpdef long np_get_edges_coordinates(self, np.ndarray[double, mode="c",ndim=2] a):
     """
     get all coordinates x1,y1,x2,y2 of all edges
     a = [[x1,y1,x2,y2], ...]
     """
 
-    cdef int enum = self.enum
-    cdef int v1
-    cdef int v2
-    cdef int e
-    cdef int n = 0
+    cdef long enum = self.enum
+    cdef long v1
+    cdef long v2
+    cdef long e
+    cdef long n = 0
 
     for e in xrange(enum):
 
@@ -391,15 +391,15 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int np_get_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a):
+  cpdef long np_get_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a):
     """
     get all coordinates x1,y1 of all alive vertices
     a = [[x1,y1], ...]
     """
 
-    cdef int vnum = self.vnum
-    cdef int v
-    cdef int n = 0
+    cdef long vnum = self.vnum
+    cdef long v
+    cdef long n = 0
 
     for v in xrange(vnum):
 
@@ -419,8 +419,8 @@ cdef class Segments:
     get greatest distance from x,y of all active or passive vertices
     """
 
-    cdef int vnum = self.vnum
-    cdef int v
+    cdef long vnum = self.vnum
+    cdef long v
     cdef double dx
     cdef double dy
     cdef double d
@@ -452,17 +452,17 @@ cdef class Segments:
 
     """
 
-    cdef int v1
-    cdef int v2
-    cdef int e
+    cdef long v1
+    cdef long v2
+    cdef long e
     cdef list res = []
     cdef dict ev_dict = {}
     cdef dict ve_dict = {}
     cdef dict e_visited = {}
     cdef list v_ordered = []
-    cdef int enum = self.enum
+    cdef long enum = self.enum
 
-    cdef int e_start = -1
+    cdef long e_start = -1
 
     for e in xrange(enum):
 
@@ -522,9 +522,9 @@ cdef class Segments:
     get list of edges
     """
 
-    cdef int e
+    cdef long e
     cdef list res = []
-    cdef int enum = self.enum
+    cdef long enum = self.enum
 
     for e in xrange(enum):
 
@@ -542,9 +542,9 @@ cdef class Segments:
     get list of lists of edge vertices
     """
 
-    cdef int e
+    cdef long e
     cdef list res = []
-    cdef int enum = self.enum
+    cdef long enum = self.enum
 
     for e in xrange(enum):
 
@@ -558,7 +558,7 @@ cdef class Segments:
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef double get_edge_length(self, int e1):
+  cpdef double get_edge_length(self, long e1):
 
     cdef double nx = <double>(self.X[self.EV[2*e1]] - self.X[self.EV[2*e1+1]])
     cdef double ny = <double>(self.Y[self.EV[2*e1]] - self.Y[self.EV[2*e1+1]])
@@ -569,17 +569,17 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef list get_edge_vertices(self, int e1):
+  cpdef list get_edge_vertices(self, long e1):
 
     return [self.EV[2*e1], self.EV[2*e1+1]]
 
-  cpdef init_line_segment(self, list xys, int lock_edges=1):
+  cpdef init_line_segment(self, list xys, long lock_edges=1):
 
     cdef list vertices = []
-    cdef int snum = self.snum
+    cdef long snum = self.snum
     cdef double xx
     cdef double yy
-    cdef int i
+    cdef long i
 
     if lock_edges>0:
       xx,yy = xys[0]
@@ -606,10 +606,10 @@ cdef class Segments:
   cpdef init_passive_line_segment(self, list xys):
 
     cdef list vertices = []
-    cdef int snum = self.snum
+    cdef long snum = self.snum
     cdef double xx
     cdef double yy
-    cdef int i
+    cdef long i
 
     for xx,yy in xys:
       vertices.append(self.__add_passive_vertex(xx,yy,snum))
@@ -628,10 +628,10 @@ cdef class Segments:
     cdef double xx
     cdef double yy
     cdef double the
-    cdef int i
-    cdef int snum = self.snum
+    cdef long i
+    cdef long snum = self.snum
 
-    cdef int num_angles = len(angles)
+    cdef long num_angles = len(angles)
 
     for i in xrange(num_angles):
       the = angles[i]
@@ -653,8 +653,8 @@ cdef class Segments:
     cdef double xx
     cdef double yy
     cdef double the
-    cdef int i
-    cdef int snum = self.snum
+    cdef long i
+    cdef long snum = self.snum
 
     for i in xrange(len(angles)):
       the = angles[i]
@@ -674,7 +674,7 @@ cdef class Segments:
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef int collapse_edge(self, int e1, double maximum_length=-1.) except -1:
+  cpdef long collapse_edge(self, long e1, double maximum_length=-1.) except -1:
 
     if self.__edge_exists(e1)<0:
       raise ValueError('e1 does not exist')
@@ -682,14 +682,14 @@ cdef class Segments:
     if e1<0:
       raise ValueError('invalid edge in split_edge e1,'+str(e1))
 
-    cdef int v1 = self.EV[2*e1]
-    cdef int v2 = self.EV[2*e1+1]
+    cdef long v1 = self.EV[2*e1]
+    cdef long v2 = self.EV[2*e1+1]
 
     if self.VA[v1] < 1 or self.VA[v2] < 1:
       raise ValueError('edge is connected to passive vertex.')
 
-    cdef int e2
-    cdef int v3
+    cdef long e2
+    cdef long v3
 
     if self.VE[2*v1] == e1:
       e2 = self.VE[2*v1+1]
@@ -726,7 +726,7 @@ cdef class Segments:
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef int split_edge(self, int e1, double minimum_length=-1.) except -1:
+  cpdef long split_edge(self, long e1, double minimum_length=-1.) except -1:
 
     if self.__edge_exists(e1)<0:
       raise ValueError('e1 does not exist')
@@ -734,12 +734,12 @@ cdef class Segments:
     if e1<0:
       raise ValueError('invalid edge in split_edge e1,'+str(e1))
 
-    cdef int v1 = self.EV[2*e1]
-    cdef int v2 = self.EV[2*e1+1]
+    cdef long v1 = self.EV[2*e1]
+    cdef long v2 = self.EV[2*e1+1]
 
     cdef double dx
     cdef double dy
-    cdef int s = self.VS[v1]
+    cdef long s = self.VS[v1]
 
     if s<0:
       raise ValueError('Invalid segment id.')
@@ -757,7 +757,7 @@ cdef class Segments:
     cdef double midx = (self.X[v1] + self.X[v2])*0.5
     cdef double midy = (self.Y[v1] + self.Y[v2])*0.5
 
-    cdef int v3 = self.__add_vertex(midx,midy,s)
+    cdef long v3 = self.__add_vertex(midx,midy,s)
     self.__del_edge(e1)
 
     self.__add_edge(v1,v3)
@@ -773,13 +773,13 @@ cdef class Segments:
     split all edges longer than limit
     """
 
-    cdef int enum = self.enum
-    cdef int v1
-    cdef int v2
+    cdef long enum = self.enum
+    cdef long v1
+    cdef long v2
     cdef double dx
     cdef double dy
     cdef double d
-    cdef int e
+    cdef long e
 
     for e in xrange(enum):
 
@@ -805,7 +805,7 @@ cdef class Segments:
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef double get_edge_curvature(self, int e1) except -1.0:
+  cpdef double get_edge_curvature(self, long e1) except -1.0:
 
     """
     Gives an estimate of edge, e1, using the cross product of e1 and both the
@@ -819,14 +819,14 @@ cdef class Segments:
     if e1<0:
       raise ValueError('invalid edge in split_edge e1,'+str(e1))
 
-    cdef int va = self.EV[2*e1]
-    cdef int vb = self.EV[2*e1+1]
+    cdef long va = self.EV[2*e1]
+    cdef long vb = self.EV[2*e1+1]
 
     if va<0 or vb<0:
       raise ValueError('non-vertex.')
 
-    cdef int e2
-    cdef int e3
+    cdef long e2
+    cdef long e3
 
     if self.VE[2*va] == self.VE[2*vb]:
       e2 = self.VE[2*va+1]
@@ -847,10 +847,10 @@ cdef class Segments:
     cdef double bx
     cdef double ay
     cdef double by
-    cdef int v1
-    cdef int v2
-    cdef int v3 = self.EV[2*e1]
-    cdef int v4 = self.EV[2*e1+1]
+    cdef long v1
+    cdef long v2
+    cdef long v3 = self.EV[2*e1]
+    cdef long v4 = self.EV[2*e1+1]
 
     cdef double t = 0.0
 
@@ -884,9 +884,9 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int get_active_vertex_count(self):
+  cpdef long get_active_vertex_count(self):
 
-    cdef int c = 0
+    cdef long c = 0
 
     for v in xrange(self.vnum):
       if self.VA[v]>0:
@@ -897,28 +897,28 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int safe_vertex_positions(self, double limit):
+  cpdef long safe_vertex_positions(self, double limit):
 
     return self.__safe_vertex_positions(limit)
 
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int get_snum(self):
+  cpdef long get_snum(self):
 
     return self.snum
 
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int get_vnum(self):
+  cpdef long get_vnum(self):
 
     return self.vnum
 
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef int get_enum(self):
+  cpdef long get_enum(self):
 
     return self.enum
 

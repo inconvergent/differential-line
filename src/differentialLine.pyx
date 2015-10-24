@@ -11,12 +11,12 @@ from cython.parallel import parallel, prange
 from libc.math cimport sqrt
 
 from helpers cimport double_array_init
-from helpers cimport int_array_init
+from helpers cimport long_array_init
 from helpers cimport edges_are_connected
 
 cdef class DifferentialLine(segments.Segments):
 
-  def __init__(self, int nmax, double zonewidth, double nearl, double farl, int procs):
+  def __init__(self, long nmax, double zonewidth, double nearl, double farl, long procs):
 
     segments.Segments.__init__(self, nmax, zonewidth)
 
@@ -38,15 +38,15 @@ cdef class DifferentialLine(segments.Segments):
 
     return
 
-  def __cinit__(self, int nmax, *arg, **args):
+  def __cinit__(self, long nmax, *arg, **args):
 
     self.SX = <double *>malloc(nmax*sizeof(double))
 
     self.SY = <double *>malloc(nmax*sizeof(double))
 
-    self.SD = <int *>malloc(nmax*sizeof(int))
+    self.SD = <long *>malloc(nmax*sizeof(long))
 
-    self.vertices = <int *>malloc(nmax*sizeof(int))
+    self.vertices = <long *>malloc(nmax*sizeof(long))
 
     return
 
@@ -66,23 +66,23 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cdef int __optimize_avoid(self, double step):
+  cdef long __optimize_avoid(self, double step):
     """
     all vertices will move away from all neighboring (closer than farl)
     vertices
     """
 
-    cdef int procs = self.procs
+    cdef long procs = self.procs
     cdef double farl = self.farl
     cdef double nearl = self.nearl
 
-    cdef int vnum = self.vnum
+    cdef long vnum = self.vnum
 
-    cdef unsigned int v
-    cdef unsigned int k
+    cdef unsigned long v
+    cdef unsigned long k
 
-    cdef int neigh
-    cdef int neighbor_num
+    cdef long neigh
+    cdef long neighbor_num
 
     cdef double x
     cdef double y
@@ -93,18 +93,18 @@ cdef class DifferentialLine(segments.Segments):
     cdef double resx
     cdef double resy
 
-    cdef int *vertices
-    cdef int asize = self.zonemap.__get_max_sphere_count()*sizeof(int)
+    cdef long *vertices
+    cdef long asize = self.zonemap.__get_max_sphere_count()*sizeof(long)
 
-    cdef int e1
-    cdef int e2
+    cdef long e1
+    cdef long e2
 
-    cdef int v1
-    cdef int v2
+    cdef long v1
+    cdef long v2
 
     with nogil, parallel(num_threads=procs):
 
-      vertices = <int *>malloc(asize)
+      vertices = <long *>malloc(asize)
 
       for v in prange(vnum, schedule='guided'):
 
@@ -170,23 +170,23 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cdef int __optimize_contract(self, double step, double freeze_distance):
+  cdef long __optimize_contract(self, double step, double freeze_distance):
     """
     all vertices will move away from all neighboring (closer than farl)
     vertices
     """
 
-    cdef int procs = self.procs
+    cdef long procs = self.procs
     cdef double farl = self.farl
     cdef double nearl = self.nearl
 
-    cdef int vnum = self.vnum
+    cdef long vnum = self.vnum
 
-    cdef unsigned int v
-    cdef unsigned int k
+    cdef unsigned long v
+    cdef unsigned long k
 
-    cdef int neigh
-    cdef int neighbor_num
+    cdef long neigh
+    cdef long neighbor_num
 
     cdef double x
     cdef double y
@@ -197,16 +197,16 @@ cdef class DifferentialLine(segments.Segments):
     cdef double resx
     cdef double resy
 
-    cdef int *vertices
-    cdef int asize = self.zonemap.__get_max_sphere_count()*sizeof(int)
+    cdef long *vertices
+    cdef long asize = self.zonemap.__get_max_sphere_count()*sizeof(long)
 
-    cdef int e1
-    cdef int e2
+    cdef long e1
+    cdef long e2
 
-    cdef int v1
-    cdef int v2
-    cdef int s1
-    cdef int s2
+    cdef long v1
+    cdef long v2
+    cdef long s1
+    cdef long s2
 
     with nogil, parallel(num_threads=procs):
 
@@ -235,7 +235,7 @@ cdef class DifferentialLine(segments.Segments):
         x = self.X[v]
         y = self.Y[v]
 
-        vertices = <int *>malloc(asize)
+        vertices = <long *>malloc(asize)
         neighbor_num = self.zonemap.__sphere_vertices(x, y, farl, vertices)
 
         resx = 0.
@@ -304,7 +304,7 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef int optimize_avoid(self, double step):
+  cpdef long optimize_avoid(self, double step):
 
     double_array_init(self.SX,self.vnum,0.)
     double_array_init(self.SY,self.vnum,0.)
@@ -325,12 +325,12 @@ cdef class DifferentialLine(segments.Segments):
   @cython.boundscheck(False)
   @cython.nonecheck(False)
   @cython.cdivision(True)
-  cpdef int optimize_contract(self, double step, double freeze_distance):
+  cpdef long optimize_contract(self, double step, double freeze_distance):
 
     double_array_init(self.SX,self.vnum,0.)
     double_array_init(self.SY,self.vnum,0.)
 
-    int_array_init(self.SD,self.vnum,-1)
+    long_array_init(self.SD,self.vnum,-1)
 
     self.__optimize_contract(step, freeze_distance)
 
