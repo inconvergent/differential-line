@@ -45,7 +45,7 @@ def steps(df):
   global i
 
   t1 = time()
-  df.optimize_avoid(STP)
+  df.optimize_position(STP)
   spawn_curl(df, NEARL)
   #spawn(df, NEARL, 0.05)
 

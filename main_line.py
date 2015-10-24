@@ -87,7 +87,7 @@ def main():
 
     t_start = time()
 
-    DF.optimize_avoid(STP)
+    DF.optimize_position(STP)
     spawn_curl(DF,NEARL)
 
     if i%100==0:

@@ -45,7 +45,7 @@ def steps(df):
 
   t1 = time()
 
-  df.optimize_avoid(STP)
+  df.optimize_position(STP)
   spawn_curl(df, NEARL)
 
   if df.safe_vertex_positions(3*STP)<0:
