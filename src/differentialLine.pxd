@@ -25,11 +25,15 @@ cdef class DifferentialLine(segments.Segments):
 
   ## FUNCTIONS
 
-  cdef long __optimize_avoid(self, double step)
+  cdef long __reject(
+    self,
+    int v,
+    long *vertices,
+    long num,
+    double step,
+    double *sx,
+    double *sy
+  ) nogil
 
-  cdef long __optimize_contract(self, double step, double freeze_distance)
-
-  cpdef long optimize_avoid(self, double step)
-
-  cpdef long optimize_contract(self, double step, double freeze_distance)
+  cpdef long optimize_position(self, double step)
 

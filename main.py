@@ -34,7 +34,7 @@ def steps(df,steps_itt):
 
   for i in xrange(steps_itt):
 
-    df.optimize_avoid(STP)
+    df.optimize_position(STP)
     spawn_curl(df,NEARL)
 
 
