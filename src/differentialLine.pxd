@@ -13,23 +13,23 @@ cdef class DifferentialLine(segments.Segments):
 
   cdef double farl
 
-  cdef int procs
+  cdef long procs
 
   cdef double *SX
 
   cdef double *SY
 
-  cdef int *SD
+  cdef long *SD
 
-  cdef int *vertices
+  cdef long *vertices
 
   ## FUNCTIONS
 
-  cdef int __optimize_avoid(self, double step)
+  cdef long __optimize_avoid(self, double step)
 
-  cdef int __optimize_contract(self, double step, double freeze_distance)
+  cdef long __optimize_contract(self, double step, double freeze_distance)
 
-  cpdef int optimize_avoid(self, double step)
+  cpdef long optimize_avoid(self, double step)
 
-  cpdef int optimize_contract(self, double step, double freeze_distance)
+  cpdef long optimize_contract(self, double step, double freeze_distance)
 
