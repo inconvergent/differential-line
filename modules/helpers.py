@@ -3,6 +3,22 @@
 
 from __future__ import print_function
 
+def env_or_default(name, d, t=None):
+
+  from os import environ
+
+  try:
+    a = environ[name]
+    if a:
+      if t:
+        return t(a)
+      else:
+        return a
+    else:
+      return d
+  except Exception:
+    return d
+
 
 def export(orderd_verts, fn, meta=None):
 

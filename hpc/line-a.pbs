@@ -21,6 +21,8 @@ python=/sw/sdev/Modules/python/python-2.7.6/bin/python
 
 export PYTHONPATH=$home/.local/lib/python2.7/site-packages/
 export OMP_NUM_THREADS=$procs
+export PROCS=$procs
+export PREFIX=$fullPath
 
 mkdir -p $targetDir
 rm -rf $fullPath*.xobj
