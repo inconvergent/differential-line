@@ -15,7 +15,8 @@ STP = ONE*0.5
 NEARL = 4*ONE
 FARL = 200*ONE
 
-PROCS = 16
+PROCS = 6
+
 
 MID = 0.5
 
@@ -28,6 +29,8 @@ FRONT = [0,0,0,1]
 
 TWOPI = pi*2.
 
+PREFIX = './res/export'
+
 STAT_ITT = 1000
 EXPORT_ITT = 1000
 
@@ -39,13 +42,17 @@ def main():
   from numpy import zeros
 
   from modules.helpers import export
+  from modules.helpers import env_or_default
 
   from modules.helpers import print_stats
   from differentialLine import DifferentialLine
 
   orderd_verts = zeros((NMAX,2), 'double')
 
-  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
+  procs = env_or_default('PROCS', PROCS, t=int)
+  prefix = env_or_default('PREFIX', PREFIX)
+
+  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, procs)
 
   angles = sorted(random(NINIT))
 
@@ -65,9 +72,10 @@ def main():
 
     if i % EXPORT_ITT == 0:
 
-      fn = './res/export_a_{:010d}.xobj'.format(i)
+      fn = '{:s}_{:010d}.xobj'.format(prefix,i)
       num = DF.np_get_sorted_vert_coordinates(orderd_verts)
-      meta = '\nvnum {:d}\ntime {:f}\nnearl {:f}\nfarl {:f}\nstp {:f}'.format(
+      meta = '\nprocs {:d}\nvnum {:d}\ntime {:f}\nnearl {:f}\nfarl {:f}\nstp {:f}'.format(
+        procs,
         num,
         time()-t_start,
         NEARL,
