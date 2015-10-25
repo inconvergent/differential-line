@@ -54,7 +54,7 @@ def main():
 
   angles = sorted(random(NINIT))
 
-  DF.init_circle_segment(MID,MID,RAD, angles)
+  DF.init_circle_segment(MID,MID,RAD, angles*TWOPI)
 
   t_start = time()
 
