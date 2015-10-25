@@ -3,17 +3,14 @@
 
 from __future__ import print_function
 
-def env_or_default(name, d, t=None):
+def env_or_default(name, d):
 
   from os import environ
 
   try:
     a = environ[name]
     if a:
-      if t:
-        return t(a)
-      else:
-        return a
+      return type(d)(a)
     else:
       return d
   except Exception:

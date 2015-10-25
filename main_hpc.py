@@ -5,34 +5,21 @@ from numpy import pi
 from numpy.random import random
 from modules.growth import spawn_curl
 
-NMAX = 10**7
-SIZE = 10000
-ONE = 1./SIZE
-
-RAD = 0.1
-
-STP = ONE*0.5
-NEARL = 4*ONE
-FARL = 200*ONE
-
-PROCS = 6
-
-
-MID = 0.5
-
-LINEWIDTH = 5.*ONE
-
-NINIT = 20
-
-BACK = [1,1,1,1]
-FRONT = [0,0,0,1]
-
 TWOPI = pi*2.
 
-PREFIX = './res/export'
 
+## defaults
+NMAX = 10**7
+PREFIX = './res/export'
+SIZE = 10000
+STP = 0.5
+NEARL = 4.0
+FARL = 200.0
+PROCS = 6
 STAT_ITT = 1000
 EXPORT_ITT = 1000
+NINIT = 20
+RAD = 0.05
 
 
 def main():
@@ -47,24 +34,36 @@ def main():
   from modules.helpers import print_stats
   from differentialLine import DifferentialLine
 
-  orderd_verts = zeros((NMAX,2), 'double')
 
-  procs = env_or_default('PROCS', PROCS, t=int)
+  nmax = env_or_default('NMAX', NMAX)
+
+  procs = env_or_default('PROCS', PROCS)
   prefix = env_or_default('PREFIX', PREFIX)
+  size = env_or_default('SIZE', SIZE)
+  ninit = env_or_default('NINIT', NINIT)
 
-  DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, procs)
+  one = 1.0/size
 
-  angles = sorted(random(NINIT))
+  stp = env_or_default('STP', STP)*one
+  rad = env_or_default('RAD', RAD)
+  nearl = env_or_default('NEARL', NEARL)*one
+  farl = env_or_default('FARL', FARL)*one
 
-  DF.init_circle_segment(MID,MID,RAD, angles)
+  orderd_verts = zeros((nmax,2), 'double')
+
+  DF = DifferentialLine(nmax, farl, nearl, farl, procs)
+
+  angles = sorted(random(ninit)*TWOPI)
+
+  DF.init_circle_segment(0.5, 0.5, rad, angles)
 
   t_start = time()
 
 
   for i in count():
 
-    DF.optimize_position(STP)
-    spawn_curl(DF,NEARL)
+    DF.optimize_position(stp)
+    spawn_curl(DF,nearl)
 
     if i % STAT_ITT == 0:
 
@@ -78,9 +77,9 @@ def main():
         procs,
         num,
         time()-t_start,
-        NEARL,
-        FARL,
-        STP
+        nearl,
+        farl,
+        stp
       )
       export(orderd_verts[:num,:], SIZE, fn, meta=meta)
 
