@@ -21,7 +21,6 @@ MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
-STEPS_ITT = 500
 NINIT = 20
 
 BACK = [1,1,1,1]
@@ -29,13 +28,8 @@ FRONT = [0,0,0,1]
 
 TWOPI = pi*2.
 
-
-def steps(df,steps_itt):
-
-  for i in xrange(steps_itt):
-
-    df.optimize_position(STP)
-    spawn_curl(df,NEARL)
+STAT_ITT = 500
+EXPORT_ITT = 500
 
 
 def main():
@@ -62,25 +56,27 @@ def main():
 
   DF.init_circle_segment(MID,MID,RAD, angles)
 
+  t_start = time()
+
 
   for i in count():
 
-    t_start = time()
+    DF.optimize_position(STP)
+    spawn_curl(DF,NEARL)
 
-    steps(DF,STEPS_ITT)
+    if i % STAT_ITT == 0:
 
-    t_stop = time()
+      print_stats(i,time()-t_start,DF)
 
-    print_stats(i*STEPS_ITT,t_stop-t_start,DF)
+    if i % EXPORT_ITT == 0:
 
-    fn = './res/oryx_bb_{:010d}.png'.format(i*STEPS_ITT)
-    edges_coordinates = DF.get_edges_coordinates()
-    show(render,edges_coordinates,fn)
+      fn = './res/oryx_bb_{:010d}.png'.format(i)
+      edges_coordinates = DF.get_edges_coordinates()
+      show(render,edges_coordinates,fn)
 
-
-    fn = './res/oryx_bb_closed_{:010d}.png'.format(i*STEPS_ITT)
-    sorted_vert_coordinates = DF.get_sorted_vert_coordinates()
-    show_closed(render,sorted_vert_coordinates,fn)
+      fn = './res/oryx_bb_closed_{:010d}.png'.format(i)
+      sorted_vert_coordinates = DF.get_sorted_vert_coordinates()
+      show_closed(render,sorted_vert_coordinates,fn)
 
 
 if __name__ == '__main__':

@@ -3,19 +3,20 @@
 
 from __future__ import print_function
 
-import time
 
+def print_stats(steps, t_diff, dl):
 
-def print_stats(steps,t_diff,dl):
+  from time import strftime
 
-  s = '{:s} | steps: {:d} time: {:.5f} vnum: {:d} enum: {:d}'.format(
-    time.strftime('%d/%m/%Y %H:%M:%S'),
-    steps,
-    t_diff,
-    dl.get_vnum(),
-    dl.get_enum()
+  print(
+    '{:s} | stp: {:d} time: {:.5f} v: {:d} e: {:d}'.format(
+      strftime('%d/%m/%Y %H:%M:%S'),
+      steps,
+      t_diff,
+      dl.get_vnum(),
+      dl.get_enum()
+    )
   )
 
-  print(s)
-
   return
+
