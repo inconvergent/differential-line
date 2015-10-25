@@ -81,6 +81,8 @@ cdef class Segments:
 
   cpdef list get_sorted_vert_coordinates(self)
 
+  cpdef long  np_get_sorted_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a)
+
   cpdef list get_edges(self)
 
   cpdef list get_edges_vertices(self)

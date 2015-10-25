@@ -1,0 +1,35 @@
+#!/bin/bash
+
+#PBS -N dla
+#PBS -A ntnu233
+#PBS -l walltime=24:00:00
+#PBS -l select=1:ncpus=32:ompthreads=16
+#PBS -M shall.be.lifted@gmail.com
+
+procs=16
+
+home=/home/ntnu/andehoff/
+project=$home/x/differential-line/
+program=$project/main_hpc.py
+
+name=dla
+prefix=/work/andehoff/differential-line/
+targetDir=$prefix/$name/
+fullPath=$targetDir/$name
+python=/sw/sdev/Modules/python/python-2.7.6/bin/python
+
+
+export PYTHONPATH=$home/.local/lib/python2.7/site-packages/
+export OMP_NUM_THREADS=$procs
+
+mkdir -p $targetDir
+rm -rf $fullPath*.xobj
+
+
+module load intelcomp/14.0.1
+module load mpt/2.09
+module load python/2.7.6
+ 
+
+$python $program $fullPath.out
+ 

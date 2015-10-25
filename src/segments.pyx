@@ -517,6 +517,82 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
+  cpdef long np_get_sorted_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a):
+    """
+    get list of lists with coordinates x1,y1,x2,y2 of all edges
+
+    list is sorted, and this only works if we have one single closed
+    segment.
+
+    this is not optimized at all.
+
+    """
+
+    cdef long v1
+    cdef long v2
+    cdef long e
+    cdef dict ev_dict = {}
+    cdef dict ve_dict = {}
+    cdef dict e_visited = {}
+    cdef list v_ordered = []
+    cdef long enum = self.enum
+
+    cdef long e_start = -1
+
+    for e in xrange(enum):
+
+      if self.EV[2*e]>-1:
+
+        e_start = e
+
+        v1 = self.EV[2*e]
+        v2 = self.EV[2*e+1]
+        ev_dict[e] = [v1,v2]
+
+        if v1 in ve_dict:
+          ve_dict[v1].append(e)
+        else:
+          ve_dict[v1] = [e]
+
+        if v2 in ve_dict:
+          ve_dict[v2].append(e)
+        else:
+          ve_dict[v2] = [e]
+
+    if e_start>-1:
+
+      e_visited[e_start] = True
+
+      vcurr = ev_dict[e_start][1]
+      vend = ev_dict[e_start][0]
+
+      while vend!=vcurr:
+
+        if ve_dict[vcurr][0] in e_visited:
+          e = ve_dict[vcurr][1]
+        else:
+          e = ve_dict[vcurr][0]
+
+        e_visited[e] = True
+
+        v1,v2 = ev_dict[e]
+
+        if v1 == vcurr:
+          vcurr = v2
+        else:
+          vcurr = v1
+
+        v_ordered.append(vcurr)
+
+    for v in v_ordered:
+      a[v,0] = self.X[v]
+      a[v,1] = self.Y[v]
+
+    return len(v_ordered)
+
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef list get_edges(self):
     """
     get list of edges
