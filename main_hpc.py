@@ -6,7 +6,7 @@ from numpy.random import random
 from modules.growth import spawn_curl
 
 NMAX = 10**7
-SIZE = 20000
+SIZE = 10000
 ONE = 1./SIZE
 
 RAD = 0.1
@@ -82,7 +82,7 @@ def main():
         FARL,
         STP
       )
-      export(orderd_verts[:num,:], fn, meta=meta)
+      export(orderd_verts[:num,:], SIZE, fn, meta=meta)
 
 
 if __name__ == '__main__':
