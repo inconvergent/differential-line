@@ -38,7 +38,7 @@ def main():
   from itertools import count
   from numpy import zeros
 
-  from helpers import export
+  from modules.helpers import export
 
   from modules.helpers import print_stats
   from differentialLine import DifferentialLine
