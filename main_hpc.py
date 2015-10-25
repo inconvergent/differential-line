@@ -74,7 +74,7 @@ def main():
 
       fn = '{:s}_{:010d}.xobj'.format(prefix,i)
       num = DF.np_get_sorted_vert_coordinates(orderd_verts)
-      meta = '\nprocs {:d}\nvnum {:d}\ntime {:f}\nnearl {:f}\nfarl {:f}\nstp {:f}'.format(
+      meta = '\n# procs {:d}\n# vnum {:d}\n# time {:f}\n# nearl {:f}\n# farl {:f}\n# stp {:f}'.format(
         procs,
         num,
         time()-t_start,
