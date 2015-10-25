@@ -531,6 +531,8 @@ cdef class Segments:
     cdef long v1
     cdef long v2
     cdef long e
+    cdef long v
+    cdef long k
     cdef dict ev_dict = {}
     cdef dict ve_dict = {}
     cdef dict e_visited = {}
@@ -584,9 +586,9 @@ cdef class Segments:
 
         v_ordered.append(vcurr)
 
-    for v in v_ordered:
-      a[v,0] = self.X[v]
-      a[v,1] = self.Y[v]
+    for k, v in enumerate(v_ordered):
+      a[k,0] = self.X[v]
+      a[k,1] = self.Y[v]
 
     return len(v_ordered)
 
