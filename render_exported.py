@@ -26,7 +26,7 @@ def main(args):
 
   out = ''.join(args.fn.split('.')[:-1])+'.png'
 
-  show_closed(render, vertices, out)
+  show_closed(render, vertices, out, fill=args.closed)
   #for vv in vertices:
     #render.circle(vv[0], vv[1], one, fill=True)
 

@@ -67,7 +67,7 @@ def dots(render,xys,fn=None):
   if fn:
     render.write_to_png(fn)
 
-def show_closed(render,coords,fn=None):
+def show_closed(render,coords,fn=None, fill=True):
 
   render.clear_canvas()
   render.closed_path(coords)
