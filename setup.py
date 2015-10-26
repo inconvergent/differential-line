@@ -6,7 +6,7 @@ from Cython.Build import cythonize
 from Cython.Distutils import build_ext
 import numpy
 
-_extra = [ '-fopenmp' , '-O3', '-ffast-math']
+_extra = [ '-O3', '-ffast-math']
 
 
 extensions = [
@@ -16,8 +16,7 @@ extensions = [
   ),
   Extension('differentialLine',
             sources = ['./src/differentialLine.pyx'],
-            extra_compile_args = _extra,
-            extra_link_args = ['-fopenmp']
+            extra_compile_args = _extra
   )
 ]
 

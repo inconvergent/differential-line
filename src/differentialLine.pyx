@@ -6,8 +6,6 @@ from __future__ import division
 cimport cython
 cimport segments
 
-from cython.parallel import parallel, prange
-
 from libc.math cimport sqrt
 
 from helpers cimport double_array_init
@@ -31,7 +29,7 @@ cdef class DifferentialLine(segments.Segments):
 
     self.farl = farl
 
-    self.procs = procs
+    self.procs = 1
 
     print('nearl: {:f}'.format(nearl))
     print('farl: {:f}'.format(farl))
@@ -153,11 +151,11 @@ cdef class DifferentialLine(segments.Segments):
     cdef long v
     cdef long num
 
-    with nogil, parallel(num_threads=self.procs):
+    with nogil:
 
       vertices = <long *>malloc(asize)
 
-      for v in prange(self.vnum, schedule='guided'):
+      for v in xrange(self.vnum):
 
         self.SX[v] = 0.0
         self.SY[v] = 0.0
@@ -179,7 +177,7 @@ cdef class DifferentialLine(segments.Segments):
 
       free(vertices)
 
-      for v in prange(self.vnum, schedule='guided'):
+      for v in xrange(self.vnum):
 
         if self.VA[v]<0:
           continue
