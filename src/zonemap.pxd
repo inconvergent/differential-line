@@ -59,9 +59,15 @@ cdef class Zonemap:
 
   cdef void __assign_xy_arrays(self, double *x, double *y) nogil
 
+  cdef long __get_encode_zonemap_max_size(self) nogil
+
+  cdef void __encode_zonemap(self, long *a) nogil
+
+  cdef void __decode_zonemap(self, long *a) nogil
+
   ## INFO
 
-  cpdef list _perftest(self, long nmax, long num_polongs, long num_lookup)
+  cpdef list _perftest(self, long nmax, long num_points, long num_lookup)
 
   cpdef long add_vertex(self, long v1)
 
