@@ -52,9 +52,9 @@ def main():
   render.ctx.set_source_rgba(*FRONT)
   render.ctx.set_line_width(LINEWIDTH)
 
-  angles = sorted(random(NINIT))
+  angles = sorted(random(NINIT)*TWOPI)
 
-  DF.init_circle_segment(MID,MID,RAD, angles*TWOPI)
+  DF.init_circle_segment(MID,MID,RAD, angles)
 
   t_start = time()
 
