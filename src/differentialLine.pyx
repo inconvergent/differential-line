@@ -68,7 +68,7 @@ cdef class DifferentialLine(segments.Segments):
   @cython.cdivision(True)
   cdef long __reject(
     self,
-    int v,
+    long v,
     long *vertices,
     long num,
     double step,

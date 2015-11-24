@@ -27,7 +27,7 @@ cdef class DifferentialLine(segments.Segments):
 
   cdef long __reject(
     self,
-    int v,
+    long v,
     long *vertices,
     long num,
     double step,
