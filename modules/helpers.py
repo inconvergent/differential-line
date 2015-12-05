@@ -59,6 +59,56 @@ def export(orderd_verts, size, fn, meta=None):
 
     return
 
+def get_exporter(nmax):
+
+  from dddUtils.ioOBJ import export_2d as export_obj
+  from time import time
+  from numpy import zeros
+
+  verts = zeros((nmax, 2),'double')
+  edges = zeros((nmax, 3),'int')
+
+  t0 = time()
+
+  def f(dm, data, itt, final=False):
+
+    if final:
+      fn = '{:s}_final.2obj'.format(data['prefix'])
+    else:
+      fn = '{:s}_{:010d}.2obj'.format(data['prefix'],itt)
+
+    vnum = dm.np_get_vert_coordinates(verts)
+    enum = dm.np_get_edges(edges)
+
+    meta = '\n# procs {:d}\n'+\
+      '# vnum {:d}\n'+\
+      '# enum {:d}\n'+\
+      '# time {:f}\n'+\
+      '# nearl {:f}\n'+\
+      '# farl {:f}\n'+\
+      '# stp {:f}\n'+\
+      '# size {:d}\n'
+      
+    meta = meta.format(
+      data['procs'],
+      vnum,
+      enum,
+      time()-t0,
+      data['nearl'],
+      data['farl'],
+      data['stp'],
+      data['size']
+   )
+    export_obj(
+      'mesh',
+      fn, 
+      verts = verts[:vnum,:], 
+      edges = edges[:enum,:], 
+      meta = meta
+    )
+
+  return f
+
 
 def print_stats(steps, t_diff, dl):
 

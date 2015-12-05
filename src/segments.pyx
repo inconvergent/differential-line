@@ -391,6 +391,27 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
+  cpdef long np_get_edges(self, np.ndarray[long, mode="c",ndim=2] a):
+    """
+    """
+
+    cdef long e
+    cdef long n = 0
+
+    for e in xrange(self.enum):
+
+      if self.EV[2*e]>-1:
+
+        a[n,0] = self.EV[2*e]
+        a[n,1] = self.EV[2*e+1]
+
+        n+=1
+
+    return n
+
+  @cython.wraparound(False)
+  @cython.boundscheck(False)
+  @cython.nonecheck(False)
   cpdef long np_get_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a):
     """
     get all coordinates x1,y1 of all alive vertices

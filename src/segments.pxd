@@ -75,6 +75,8 @@ cdef class Segments:
 
   cpdef long np_get_edges_coordinates(self, np.ndarray[double, mode="c",ndim=2] a)
 
+  cpdef long np_get_edges(self, np.ndarray[long, mode="c",ndim=2] a)
+
   cpdef long np_get_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a)
 
   cpdef double get_greatest_distance(self, double x, double y)
