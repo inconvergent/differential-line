@@ -22,7 +22,7 @@ MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
-INIT_NUM = 6
+INIT_NUM = 12
 
 BACK = [1,1,1,1]
 FRONT = [0,0,0,0.08]
@@ -55,14 +55,17 @@ def main():
 
   ## arc
 
-  angles = sorted(random(INIT_NUM)*pi*1.5)
-  xys = []
-  for a in angles:
-    x = 0.5 + cos(a)*0.2
-    y = 0.5 + sin(a)*0.2
-    xys.append((x,y))
+  # angles = sorted(random(INIT_NUM)*pi*1.5)
+  # xys = []
+  # for a in angles:
+    # x = 0.5 + cos(a)*0.2
+    # y = 0.5 + sin(a)*0.2
+    # xys.append((x,y))
 
-  DF.init_line_segment(xys, lock_edges=1)
+  # DF.init_line_segment(xys, lock_edges=1)
+
+  angles = sorted(random(INIT_NUM)*TWOPI)
+  DF.init_circle_segment(MID,MID,0.2, angles)
 
 
   for i in count():
