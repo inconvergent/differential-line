@@ -8,16 +8,17 @@ FRONT = [0,0,0,1]
 def main(args):
 
   from render.render import Render
-  from modules.helpers import load
+  from dddUtils.ioOBJ import load_2d as load
 
   #from modules.show import show
   from modules.show import show_closed
 
   data = load(args.fn)
 
-  size = data['size']
+  size = args.size
   one = 1.0/size
   vertices = data['vertices']
+  lines = data['lines']
 
   render = Render(size, BACK, FRONT)
 
@@ -26,7 +27,7 @@ def main(args):
 
   out = ''.join(args.fn.split('.')[:-1])+'.png'
 
-  show_closed(render, vertices, out, fill=args.closed)
+  show_closed(render, vertices[lines[0],:], out, fill=args.closed)
   #for vv in vertices:
     #render.circle(vv[0], vv[1], one, fill=True)
 
@@ -54,6 +55,11 @@ if __name__ == '__main__':
     '--width',
     type=float,
     default=1.0
+  )
+  parser.add_argument(
+    '--size',
+    type=int,
+    default=5000
   )
 
   args = parser.parse_args()

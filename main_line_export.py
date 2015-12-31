@@ -6,7 +6,7 @@ from numpy.random import random, seed
 from modules.growth import spawn, spawn_curl
 
 NMAX = 10**7
-SIZE = 10000
+SIZE = 5000
 ONE = 1./SIZE
 
 PREFIX = './res/export'
