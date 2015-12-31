@@ -35,8 +35,6 @@ def main():
   from time import time
   from itertools import count
 
-  from modules.helpers import export
-
   from differentialLine import DifferentialLine
 
   from modules.helpers import print_stats

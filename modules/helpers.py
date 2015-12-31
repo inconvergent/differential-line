@@ -42,23 +42,6 @@ def load(fn):
     'vertices': vertices
   }
 
-
-def export(orderd_verts, size, fn, meta=None):
-
-  from codecs import open
-
-  with open(fn, 'wb', encoding='utf8') as f:
-    f.write('# differential line export. beta.\n')
-    if meta:
-      f.write('{:s}\n'.format(meta))
-
-    f.write('s {:d}\n'.format(size))
-
-    for vv in orderd_verts:
-      f.write('v {:f} {:f}\n'.format(*vv))
-
-    return
-
 def get_exporter(nmax):
 
   from dddUtils.ioOBJ import export_2d as export_obj
@@ -66,7 +49,8 @@ def get_exporter(nmax):
   from numpy import zeros
 
   verts = zeros((nmax, 2),'double')
-  edges = zeros((nmax, 3),'int')
+  edges = zeros((nmax, 2),'int')
+  line = zeros(nmax,'int')
 
   t0 = time()
 
@@ -79,6 +63,7 @@ def get_exporter(nmax):
 
     vnum = dm.np_get_vert_coordinates(verts)
     enum = dm.np_get_edges(edges)
+    linenum = dm.np_get_sorted_verts(line)
 
     meta = '\n# procs {:d}\n'+\
       '# vnum {:d}\n'+\
@@ -88,7 +73,7 @@ def get_exporter(nmax):
       '# farl {:f}\n'+\
       '# stp {:f}\n'+\
       '# size {:d}\n'
-      
+
     meta = meta.format(
       data['procs'],
       vnum,
@@ -101,9 +86,10 @@ def get_exporter(nmax):
    )
     export_obj(
       'mesh',
-      fn, 
-      verts = verts[:vnum,:], 
-      edges = edges[:enum,:], 
+      fn,
+      verts = verts[:vnum,:],
+      edges = edges[:enum,:],
+      lines = [line[:linenum]],
       meta = meta
     )
 

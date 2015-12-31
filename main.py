@@ -4,6 +4,7 @@
 from numpy import pi
 from numpy.random import random, seed
 from modules.growth import spawn, spawn_curl
+from numpy import zeros
 
 NMAX = 10**7
 SIZE = 10000
@@ -30,6 +31,10 @@ TWOPI = pi*2.
 
 STAT_ITT = 500
 EXPORT_ITT = 500
+
+
+np_verts = zeros((NMAX,2), 'double')
+np_edges = zeros((NMAX,4), 'double')
 
 
 def main():
@@ -71,12 +76,12 @@ def main():
     if i % EXPORT_ITT == 0:
 
       fn = './res/oryx_bb_{:010d}.png'.format(i)
-      edges_coordinates = DF.get_edges_coordinates()
-      show(render,edges_coordinates,fn)
+      num = DF.np_get_edges_coordinates(np_edges)
+      show(render,np_edges[:num,:],fn)
 
       fn = './res/oryx_bb_closed_{:010d}.png'.format(i)
-      sorted_vert_coordinates = DF.get_sorted_vert_coordinates()
-      show_closed(render,sorted_vert_coordinates,fn)
+      num = DF.np_get_sorted_vert_coordinates(np_verts)
+      show_closed(render,np_verts[:num,:],fn)
 
 
 if __name__ == '__main__':

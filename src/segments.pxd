@@ -81,7 +81,7 @@ cdef class Segments:
 
   cpdef double get_greatest_distance(self, double x, double y)
 
-  cpdef list get_sorted_vert_coordinates(self)
+  cpdef long  np_get_sorted_verts(self, np.ndarray[long, mode="c",ndim=1] a)
 
   cpdef long  np_get_sorted_vert_coordinates(self, np.ndarray[double, mode="c",ndim=2] a)
 

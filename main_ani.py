@@ -60,8 +60,8 @@ def steps(df):
   return True
 
 
-np_coords = zeros(shape=(NMAX,4), dtype='float')
-np_vert_coords = zeros(shape=(NMAX,2), dtype='float')
+np_edges = zeros(shape=(NMAX,4), dtype='float')
+np_verts = zeros(shape=(NMAX,2), dtype='float')
 
 
 def main():
@@ -93,12 +93,12 @@ def main():
     fn = None
 
     ## render outline
-    num = DF.np_get_edges_coordinates(np_coords)
-    show(render,np_coords[:num,:],fn,r=1.3*ONE)
+    num = DF.np_get_edges_coordinates(np_edges)
+    show(render,np_edges[:num,:],fn,r=1.3*ONE)
 
     ## render solid
-    #sorted_vert_coordinates = DF.get_sorted_vert_coordinates()
-    #show_closed(render,sorted_vert_coordinates,fn)
+    # num = DF.get_sorted_vert_coordinates(np_verts)
+    #show_closed(render,np_verts[:num,:],fn)
 
     i += 1
 

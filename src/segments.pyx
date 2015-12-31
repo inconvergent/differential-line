@@ -462,21 +462,13 @@ cdef class Segments:
   @cython.wraparound(False)
   @cython.boundscheck(False)
   @cython.nonecheck(False)
-  cpdef list get_sorted_vert_coordinates(self):
-    """
-    get list of lists with coordinates x1,y1,x2,y2 of all edges
-
-    list is sorted, and this only works if we have one single closed
-    segment.
-
-    this is not optimized at all.
-
-    """
+  cpdef long np_get_sorted_verts(self, np.ndarray[long, mode="c",ndim=1] a):
 
     cdef long v1
     cdef long v2
     cdef long e
-    cdef list res = []
+    cdef long v
+    cdef long k
     cdef dict ev_dict = {}
     cdef dict ve_dict = {}
     cdef dict e_visited = {}
@@ -530,10 +522,10 @@ cdef class Segments:
 
         v_ordered.append(vcurr)
 
-    for v in v_ordered:
-        res.append([self.X[v], self.Y[v]])
+    for k, v in enumerate(v_ordered):
+      a[k] = v
 
-    return res
+    return len(v_ordered)
 
   @cython.wraparound(False)
   @cython.boundscheck(False)
