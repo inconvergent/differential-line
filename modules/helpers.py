@@ -3,48 +3,10 @@
 
 from __future__ import print_function
 
-def env_or_default(name, d):
 
-  from os import environ
+def get_exporter(nmax, data):
 
-  try:
-    a = environ[name]
-    if a:
-      return type(d)(a)
-    else:
-      return d
-  except Exception:
-    return d
-
-
-def load(fn):
-
-  from codecs import open
-
-  vertices = []
-
-  with open(fn, 'r', encoding='utf8') as f:
-
-    for l in f:
-      if l.startswith('#'):
-        continue
-
-      values = l.split()
-      if not values:
-        continue
-      if values[0] == 's':
-        size = int(values[1])
-      if values[0] == 'v':
-        vertices.append([float(v) for v in values[1:]])
-
-  return {
-    'size': size,
-    'vertices': vertices
-  }
-
-def get_exporter(nmax):
-
-  from dddUtils.ioOBJ import export_2d as export_obj
+  from dddUtils.ioOBJ import export_2d as export
   from time import time
   from numpy import zeros
 
@@ -54,16 +16,13 @@ def get_exporter(nmax):
 
   t0 = time()
 
-  def f(dm, data, itt, final=False):
-
-    if final:
-      fn = '{:s}_final.2obj'.format(data['prefix'])
-    else:
-      fn = '{:s}_{:010d}.2obj'.format(data['prefix'],itt)
+  def f(dm, fn):
 
     vnum = dm.np_get_vert_coordinates(verts)
     enum = dm.np_get_edges(edges)
     linenum = dm.np_get_sorted_verts(line)
+
+    print(linenum, line[:linenum])
 
     meta = '\n# procs {:d}\n'+\
       '# vnum {:d}\n'+\
@@ -84,8 +43,8 @@ def get_exporter(nmax):
       data['stp'],
       data['size']
    )
-    export_obj(
-      'mesh',
+    export(
+      'line',
       fn,
       verts = verts[:vnum,:],
       edges = edges[:enum,:],

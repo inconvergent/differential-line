@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from numpy import pi, cos, sin, linspace, zeros
-from numpy.random import random, seed
+from numpy.random import random
 from modules.growth import spawn, spawn_curl
 
 NMAX = 10**7
@@ -19,7 +19,7 @@ MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
-INIT_NUM = 6
+INIT_NUM = 7
 
 BACK = [1,1,1,1]
 FRONT = [0,0,0,0.08]
@@ -52,6 +52,9 @@ def main():
 
   render.ctx.set_source_rgba(*FRONT)
   render.ctx.set_line_width(LINEWIDTH)
+
+  # angles = sorted(random(INIT_NUM)*TWOPI)
+  # DF.init_circle_segment(MID,MID,0.2, angles)
 
   ## arc
 
@@ -93,7 +96,7 @@ def main():
     spawn_curl(DF,NEARL,0.016)
 
     if i%100==0:
-      fn = './res/sider_arc_ac_{:04d}.png'.format(i)
+      fn = './res/chris_bd_{:04d}.png'.format(i)
     else:
       fn = None
 

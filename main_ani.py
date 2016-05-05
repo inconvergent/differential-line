@@ -10,10 +10,10 @@ from modules.growth import spawn
 from numpy import zeros
 
 NMAX = 10**6
-SIZE = 800
+SIZE = 1400
 ONE = 1./SIZE
 
-PROCS = 2
+PROCS = 6
 
 INIT_RAD = 25*ONE
 INIT_NUM = 40
@@ -42,6 +42,7 @@ def steps(df):
   from time import time
   from modules.helpers import print_stats
 
+
   global i
 
   t1 = time()
@@ -66,13 +67,12 @@ np_verts = zeros(shape=(NMAX,2), dtype='float')
 
 def main():
 
-  import gtk
-
   from render.render import Animate
   from differentialLine import DifferentialLine
+  from modules.helpers import get_exporter
 
-  from modules.show import show_closed
-  from modules.show import show_detail
+  # from modules.show import show_closed
+  # from modules.show import show_detail
   from modules.show import show
 
 
@@ -81,6 +81,19 @@ def main():
   angles = sorted(random(INIT_NUM)*TWOPI)
   DF.init_circle_segment(MID,MID,INIT_RAD, angles)
 
+  from fn import Fn
+  fn = Fn(prefix='./res/')
+
+  exporter = get_exporter(
+    NMAX,
+    {
+      'nearl': NEARL,
+      'farl': FARL,
+      'stp': STP,
+      'size': SIZE,
+      'procs': PROCS
+    }
+  )
 
   def wrap(render):
 
@@ -90,11 +103,19 @@ def main():
     res = steps(DF)
 
     ## if fn is a path each image will be saved to that path
-    fn = None
 
     ## render outline
     num = DF.np_get_edges_coordinates(np_edges)
-    show(render,np_edges[:num,:],fn,r=1.3*ONE)
+    if not i % 100:
+      show(render,np_edges[:num,:], None, r=1.3*ONE)
+
+    if not i % 10:
+      # render.write_to_png(fn.name())
+
+      exporter(
+        DF,
+        fn.name()+'.2obj'
+      )
 
     ## render solid
     # num = DF.get_sorted_vert_coordinates(np_verts)
@@ -105,8 +126,8 @@ def main():
     return res
 
   render = Animate(SIZE, BACK, FRONT, wrap)
+  render.start()
 
-  gtk.main()
 
 
 if __name__ == '__main__':
