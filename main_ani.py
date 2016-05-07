@@ -10,7 +10,7 @@ from modules.growth import spawn
 from numpy import zeros
 
 NMAX = 10**6
-SIZE = 1400
+SIZE = 2800
 ONE = 1./SIZE
 
 PROCS = 6
@@ -29,7 +29,6 @@ LINEWIDTH = 5.*ONE
 
 BACK = [1,1,1,1]
 FRONT = [0,0,0,5]
-RED = [1,0,0,0.3]
 
 TWOPI = pi*2.
 
@@ -48,7 +47,7 @@ def steps(df):
   t1 = time()
   df.optimize_position(STP)
   spawn_curl(df, NEARL)
-  #spawn(df, NEARL, 0.05)
+  # spawn(df, NEARL, 0.03)
 
   if df.safe_vertex_positions(3*STP)<0:
 
@@ -108,10 +107,7 @@ def main():
     num = DF.np_get_edges_coordinates(np_edges)
     if not i % 100:
       show(render,np_edges[:num,:], None, r=1.3*ONE)
-
-    if not i % 10:
       # render.write_to_png(fn.name())
-
       exporter(
         DF,
         fn.name()+'.2obj'

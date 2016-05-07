@@ -1,36 +1,36 @@
-  #!/usr/bin/python
+#!/usr/bin/python
 # -*- coding: utf-8 -*-
 
 from numpy import pi
-from numpy.random import random, seed
-from modules.growth import spawn, spawn_curl
+from modules.growth import spawn
+# from modules.growth import spawn_curl
 from numpy import zeros
 
-NMAX = 10**7
-SIZE = 10000
+NMAX = 10**6
+SIZE = 2800
 ONE = 1./SIZE
 
-RAD = 0.1
-
-STP = ONE*0.5
-NEARL = 4*ONE
-FARL = 200*ONE
-
 PROCS = 6
+
+INIT_RAD = 25*ONE
+INIT_NUM = 40
+
+
+STP = ONE*0.4
+NEARL = 3*ONE
+FARL = 40*ONE
 
 MID = 0.5
 
 LINEWIDTH = 5.*ONE
 
-NINIT = 20
-
 BACK = [1,1,1,1]
-FRONT = [0,0,0,1]
+FRONT = [0,0,0,5]
 
 TWOPI = pi*2.
 
-STAT_ITT = 500
-EXPORT_ITT = 500
+STAT_ITT = 10
+EXPORT_ITT = 100
 
 
 np_verts = zeros((NMAX,2), 'double')
@@ -45,21 +45,38 @@ def main():
   from render.render import Render
   from modules.helpers import print_stats
   from modules.show import show
-  from modules.show import show_closed
+  # from modules.show import show_closed
 
   from differentialLine import DifferentialLine
+  from modules.helpers import get_exporter
 
+  from numpy.random import random
+
+  from fn import Fn
 
   DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
+
+  fn = Fn(prefix='./res/')
+
+  exporter = get_exporter(
+    NMAX,
+    {
+      'nearl': NEARL,
+      'farl': FARL,
+      'stp': STP,
+      'size': SIZE,
+      'procs': PROCS
+    }
+  )
 
   render = Render(SIZE, BACK, FRONT)
 
   render.ctx.set_source_rgba(*FRONT)
   render.ctx.set_line_width(LINEWIDTH)
 
-  angles = sorted(random(NINIT)*TWOPI)
+  angles = sorted(random(INIT_NUM)*TWOPI)
 
-  DF.init_circle_segment(MID,MID,RAD, angles)
+  DF.init_circle_segment(MID,MID,INIT_RAD, angles)
 
   t_start = time()
 
@@ -67,7 +84,8 @@ def main():
   for i in count():
 
     DF.optimize_position(STP)
-    spawn_curl(DF,NEARL)
+    # spawn_curl(DF,NEARL)
+    spawn(DF, NEARL, 0.03)
 
     if i % STAT_ITT == 0:
 
@@ -75,13 +93,15 @@ def main():
 
     if i % EXPORT_ITT == 0:
 
-      fn = './res/oryx_bb_{:010d}.png'.format(i)
-      num = DF.np_get_edges_coordinates(np_edges)
-      show(render,np_edges[:num,:],fn)
+      name = fn.name()
 
-      fn = './res/oryx_bb_closed_{:010d}.png'.format(i)
-      num = DF.np_get_sorted_vert_coordinates(np_verts)
-      show_closed(render,np_verts[:num,:],fn)
+      num = DF.np_get_edges_coordinates(np_edges)
+      show(render,np_edges[:num,:],name+'.png')
+
+      exporter(
+        DF,
+        name+'.2obj'
+      )
 
 
 if __name__ == '__main__':

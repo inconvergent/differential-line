@@ -22,8 +22,6 @@ def get_exporter(nmax, data):
     enum = dm.np_get_edges(edges)
     linenum = dm.np_get_sorted_verts(line)
 
-    print(linenum, line[:linenum])
-
     meta = '\n# procs {:d}\n'+\
       '# vnum {:d}\n'+\
       '# enum {:d}\n'+\
