@@ -86,6 +86,10 @@ behaviour, and some of them are very experimental.)
 If you find this alorithm insteresting you might also want to check out:
 https://github.com/inconvergent/differential-mesh.
 
+Recently I also implemented a version of this algorithm using CUDA:
+
+https://github.com/inconvergent/differential-line-cuda
+
 -----------
 http://inconvergent.net
 
