@@ -11,7 +11,7 @@ def get_exporter(nmax, data):
   from numpy import zeros
 
   verts = zeros((nmax, 2),'double')
-  edges = zeros((nmax, 2),'int')
+  # edges = zeros((nmax, 2),'int')
   line = zeros(nmax,'int')
 
   t0 = time()
@@ -19,8 +19,10 @@ def get_exporter(nmax, data):
   def f(dm, fn):
 
     vnum = dm.np_get_vert_coordinates(verts)
-    enum = dm.np_get_edges(edges)
+    print(vnum)
+    # enum = dm.np_get_edges(edges)
     linenum = dm.np_get_sorted_verts(line)
+    print(linenum)
 
     meta = '\n# procs {:d}\n'+\
       '# vnum {:d}\n'+\
@@ -34,7 +36,7 @@ def get_exporter(nmax, data):
     meta = meta.format(
       data['procs'],
       vnum,
-      enum,
+      0,
       time()-t0,
       data['nearl'],
       data['farl'],
@@ -45,7 +47,7 @@ def get_exporter(nmax, data):
       'line',
       fn,
       verts = verts[:vnum,:],
-      edges = edges[:enum,:],
+      # edges = edges[:enum,:],
       lines = [line[:linenum]],
       meta = meta
     )

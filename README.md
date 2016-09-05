@@ -91,6 +91,3 @@ Recently I also implemented a version of this algorithm using CUDA:
 
 https://github.com/inconvergent/differential-line-cuda
 
------------
-http://inconvergent.net
-
