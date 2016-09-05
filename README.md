@@ -33,7 +33,8 @@ repositories:
 
 *    `render`: http://github.com/inconvergent/render
 *    `zonemap`: https://github.com/inconvergent/zonemap
-*    `fn`: https://github.com/inconvergent/fn
+*    `fn`: https://github.com/inconvergent/fn-python3 (used to generate
+     filenames, you can remove this dependency in the main files)
 
 ## Other Dependencies
 
