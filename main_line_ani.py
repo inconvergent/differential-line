@@ -3,15 +3,19 @@
 
 
 
-from numpy import pi, cos, sin
+from numpy import pi
+# from numpy import cos
+# from numpy import sin
 from numpy.random import random
-from numpy import zeros, linspace, floor
+from numpy import zeros
+# from numpy import linspace
+from numpy import floor
 
 from modules.growth import spawn_curl
 
 
 NMAX = 10**6
-SIZE = 500
+SIZE = 512
 ONE = 1./SIZE
 
 PROCS = 2
@@ -31,7 +35,6 @@ FRONT = [0,0,0,0.05]
 
 TWOPI = pi*2.
 
-i = 0
 grains = 10
 np_coords = zeros(shape=(NMAX,4), dtype='float')
 np_vert_coords = zeros(shape=(NMAX,2), dtype='float')
@@ -41,8 +44,6 @@ def steps(df):
 
   from time import time
   from modules.helpers import print_stats
-
-  global i
 
   t1 = time()
 
@@ -55,7 +56,7 @@ def steps(df):
     return False
 
   t2 = time()
-  print_stats(i, t2-t1, df)
+  print_stats(0, t2-t1, df)
 
   return True
 
@@ -69,7 +70,6 @@ def main():
 
   from modules.show import sandstroke
   from modules.show import dots
-  from modules.show import show
 
   DF = DifferentialLine(NMAX, FARL*2, NEARL, FARL, PROCS)
 
@@ -107,15 +107,13 @@ def main():
 
   def wrap(render):
 
-    global i
     global np_coords
     global np_vert_coords
     global grains
 
     ## if fn is a path each image will be saved to that path
-    # f = './res/ani{:04d}.png'.format(i)
 
-    if not i%2:
+    if not render.steps%3:
       f = fn.name()
     else:
       f = None
@@ -134,8 +132,6 @@ def main():
     if not random()<0.1:
       vert_num = DF.np_get_vert_coordinates(np_vert_coords)
       dots(render,np_vert_coords[:vert_num,:],None)
-
-    i += 1
 
     return res
 
