@@ -5,5 +5,5 @@ rm -f modules/*.pyc
 rm -f *.so
 rm -f *.pyc
 rm -rf build
-python setup.py build_ext --inplace
+./setup.py build_ext --inplace
 

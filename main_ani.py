@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 
 from numpy import pi
 from numpy.random import random
@@ -66,7 +66,7 @@ np_verts = zeros(shape=(NMAX,2), dtype='float')
 
 def main():
 
-  from render.render import Animate
+  from iutils.render import Animate
   from differentialLine import DifferentialLine
   from modules.helpers import get_exporter
 

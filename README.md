@@ -39,6 +39,7 @@ repositories:
 
 The code also depends on:
 
+*    `gi` (replaces pyGTK)
 *    `numpy`
 *    `cython`
 *    `python-cairo` (do not install with pip, this generally does not work)
@@ -49,27 +50,6 @@ To install the libraries locally, run `./install`. I have only tested this code
 in Ubuntu 14.04 LTS, but my guess is that it should work on most other
 platforms platforms as well.  However i know that the scripted install in
 `./install` will not work in Windows
-
-## Running it on OS X
-
-To install on OS X, you'll need to install [OpenMP /
-Clang](https://clang-omp.github.io/), and then have cc linked to that
-installation. So, in the differential-line directory:
-
-```bash
-$ brew install clang-omp
-$ ln -s /usr/local/bin/clang-omp /usr/local/bin/cc
-$ ./install
-$ rm /usr/local/bin/cc
-```
-
-Also, you'll need to have pygtk installed to run the included files.
-
-```bash
-$ brew install pygtk
-```
-
-You should now have a working copy installed.
 
 ## Running it on Windows?
 

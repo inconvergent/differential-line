@@ -27,7 +27,7 @@ def spawn_curl(df, limit, prob_spawn=1.0):
   tot_curv = 0
   max_curv = -100000
 
-  for e in xrange(enum):
+  for e in range(enum):
     try:
       t = df.get_edge_curvature(e)
       ind_curv[e] = t
@@ -37,7 +37,7 @@ def spawn_curl(df, limit, prob_spawn=1.0):
       pass
 
   ne = len(ind_curv)
-  for r,(e,t) in zip(random(ne),ind_curv.iteritems()):
+  for r,(e,t) in zip(random(ne),iter(ind_curv.items())):
 
     if r<t/max_curv*prob_spawn:
     #if t>2*limit or r<t/max_curv:
@@ -52,9 +52,9 @@ def spawn_short(df, short, long):
 
   enum = df.get_enum()
 
-  for e in xrange(enum):
+  for e in range(enum):
     l = df.get_edge_length(e)
-    if l>long:
+    if l>int:
       try:
         df.split_edge(e, minimum_length=short)
       except ValueError:

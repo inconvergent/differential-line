@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 
 try:
   from setuptools import setup
@@ -28,9 +28,9 @@ extensions = [
 
 setup(
   name = "differential-line",
-  version = '0.0.4',
+  version = '0.1.0',
   author = '@inconvergent',
-  install_requires = ['numpy>=1.8.2', 'cython>=0.20.0'],
+  install_requires = ['numpy', 'cython'],
   license = 'MIT',
   cmdclass={'build_ext' : build_ext},
   include_dirs = [numpy.get_include()],

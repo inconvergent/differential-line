@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 
 from numpy import pi
 from numpy.random import random
@@ -66,9 +66,7 @@ np_vert_coords = zeros(shape=(NMAX,2), dtype='float')
 
 def main():
 
-  import gtk
-
-  from render.render import Animate
+  from iutils.render import Animate
   from differentialLine import DifferentialLine
 
   from modules.show import show_closed
@@ -101,8 +99,7 @@ def main():
     return res
 
   render = Animate(SIZE, BACK, FRONT, wrap)
-
-  gtk.main()
+  render.start()
 
 
 if __name__ == '__main__':

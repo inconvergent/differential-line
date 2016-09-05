@@ -1,12 +1,12 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 
 
 def get_exporter(nmax, data):
 
-  from dddUtils.ioOBJ import export_2d as export
+  from iutils.ioOBJ import export_2d as export
   from time import time
   from numpy import zeros
 

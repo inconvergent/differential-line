@@ -1,7 +1,7 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-from __future__ import print_function
+
 
 from numpy import pi, cos, sin
 from numpy.random import random
@@ -62,9 +62,7 @@ def steps(df):
 
 def main():
 
-  import gtk
-
-  from render.render import Animate
+  from iutils.render import Animate
   from differentialLine import DifferentialLine
 
   from fn import Fn
@@ -142,8 +140,7 @@ def main():
     return res
 
   render = Animate(SIZE, BACK, FRONT, wrap)
-
-  gtk.main()
+  render.start()
 
 
 if __name__ == '__main__':

@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from numpy import pi, cos, sin, linspace, zeros
@@ -34,7 +34,7 @@ def main():
 
   from differentialLine import DifferentialLine
 
-  from render.render import Render
+  from iutils.render import Render
   from modules.helpers import print_stats
 
   from modules.show import sandstroke

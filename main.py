@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
 from numpy import pi
@@ -42,7 +42,7 @@ def main():
   from time import time
   from itertools import count
 
-  from render.render import Render
+  from iutils.render import Render
   from modules.helpers import print_stats
   from modules.show import show
   # from modules.show import show_closed
