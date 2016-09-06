@@ -31,7 +31,7 @@ interesting 3D illusion.
 In order for this code to run you must first download and install these two
 repositories:
 
-*    `render`: http://github.com/inconvergent/render
+*    `iutils`: http://github.com/inconvergent/iutils
 *    `zonemap`: https://github.com/inconvergent/zonemap
 *    `fn`: https://github.com/inconvergent/fn-python3 (used to generate
      filenames, you can remove this dependency in the main files)
