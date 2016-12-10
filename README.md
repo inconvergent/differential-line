@@ -33,7 +33,7 @@ repositories:
 
 *    `iutils`: http://github.com/inconvergent/iutils
 *    `zonemap`: https://github.com/inconvergent/zonemap
-*    `fn`: https://github.com/inconvergent/fn-python3 (used to generate
+*    `fn`: https://github.com/inconvergent/fn (used to generate
      filenames, you can remove this dependency in the main files)
 
 ## Other Dependencies
