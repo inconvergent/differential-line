@@ -3,9 +3,15 @@ Differential Line
 
 ![ani](/img/ani2.gif?raw=true "animation")
 
-This algorithm is inspired by the way a number of biological things in nature
-grows. Among other things it is made to mimic the growth of the human brain, as
-well as a great number of plants.
+This algorithm simulates the way a number of biological things in nature grows.
+Among other things it is made to mimic the growth of the human brain, as well
+as a great number of plants.
+
+Specifically this code is a line-based implementation of behaviour very similar
+to Floraform by Nervous System:
+https://n-e-r-v-o-u-s.com/projects/sets/floraform/
+Another relevant paper (which I discovered later) is this:
+http://www.dgp.toronto.edu/~karan/artexhibit/mazes.pdf
 
 ![ani](/img/ani.gif?raw=true "animation")
 
